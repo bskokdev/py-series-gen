@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 series_generator.py --batch-size 256 --stream true
+python3 series_generator.py --batch-size 2048 --stream true
