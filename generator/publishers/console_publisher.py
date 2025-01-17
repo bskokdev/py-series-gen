@@ -12,6 +12,7 @@ class ConsolePublisher(Publisher):
         We call the base impl at the end to ensure correct behaviour with the `is_stream` flag.
         """
         for value in self._generator(self._target.batch_size):
-            print(f'{value.timestamp} | {value.data}')
+            timestamp, value = value.data
+            print(f'{timestamp} | {value}')
         
         super().publish_to_target()

@@ -6,7 +6,7 @@ from mockseries.seasonality import SinusoidalSeasonality
 from mockseries.noise import RedNoise
 from mockseries.signal.signal import Signal
 
-from values import TimeSeriesValue
+from values import Value
 
 def _define_time_series() -> Signal:
     """This only defines properties of the time series we're constructing
@@ -47,5 +47,5 @@ def time_series_generator(batch_size: int):
 
         # yield from provides better performance because it handles the iteration at the C level rather than in Python code
         yield from (
-            TimeSeriesValue(timestamp=time, data=data) for time, data in zip(timestamps, data_points)
+            Value(data=(time_point, data_point)) for time_point, data_point in zip(timestamps, data_points)
         )
