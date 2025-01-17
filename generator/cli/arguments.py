@@ -1,25 +1,25 @@
 from argparse import ArgumentParser
 from collections import defaultdict
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 
 from publishers.targets import TargetFactory, TargetType, Target
 
 # Maps a target type argument string to an actual enum class, for better typing
-target_arg_to_type = defaultdict(None, {
+target_arg_to_type: Dict[str, TargetType] = defaultdict(None, {
     'console': TargetType.console,
     'kafka': TargetType.kafka
 })
 
 # Maps a target type to a list of arguments specific to such type
 # This is where you add specific arguments for each target type (console, kafka, etc.)
-specific_target_args = defaultdict(None, {
+specific_target_args: Dict[TargetType, Tuple[str, str, any]] = defaultdict(None, {
     # Example usage:
     # TargetType.console: [
     #     ('--console-test', 'console_test', int),
     # ]
 })
 
-def _attach_target_args(parser: ArgumentParser, specific_args_list: List[Tuple]):
+def _attach_target_args(parser: ArgumentParser, specific_args_list: List[Tuple[str, str, any]]):
     """Attaches specific target arguments to the argument parser
 
     Args:
