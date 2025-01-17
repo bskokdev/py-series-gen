@@ -1,5 +1,4 @@
-from .publisher import Publisher
-from .console_publisher import ConsolePublisher
+from . import ConsolePublisher, Publisher
 from .targets import TargetType, Target
 
 
@@ -11,8 +10,7 @@ class PublisherFactory:
         and a generator function and creates a new publisher based on these arguments.
 
         Args:
-            target (str): publish target to send the data to
-            is_stream (bool): should the batch be repeatedly be sent to the target
+            target (Target): publish target to send the data to. This contains all the metadata to do that.
             generator_func (any): generator function which creates the data
 
         Raises:

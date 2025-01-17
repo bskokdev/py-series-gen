@@ -10,9 +10,6 @@ class ConsolePublisher(Publisher):
     def publish_to_target(self):
         """Publish method which overrides the based impl., and sends data to the console output.
         We call the base impl at the end to ensure correct behaviour with the `is_stream` flag.
-
-        Args:
-            batch_size (int): Amount of data to be sent to the the console.
         """
         for value in self._generator(self._target.batch_size):
             print(f'{value.timestamp} | {value.data}')

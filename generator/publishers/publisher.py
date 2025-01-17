@@ -16,13 +16,7 @@ class Publisher(ABC):
     @abstractmethod
     def publish_to_target(self):
         """Abstract implementation of the publish method.
-        In this base impl we check for the is_stream state.
-        If the is_stream argument == True, we recurse on the method and continue the publish stream
-
-        Args:
-            batch_size (int): Amount of data to be sent to the target in a single publish batch.
-                In case of is_stream == True, total data sent is: (n * batch_size),
-                where n is the number of repetitions.
+        If the is_stream argument == True in the target, we recurse on the method and continue the publish stream
         """
         if self._target.is_stream:
             self.publish_to_target()

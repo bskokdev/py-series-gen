@@ -1,5 +1,5 @@
 from cli.arguments import build_target_from_args
-from publishers.publisher_factory import PublisherFactory
+from publishers import PublisherFactory
 from generators import time_series_generator
 
 
