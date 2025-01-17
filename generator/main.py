@@ -1,13 +1,12 @@
-from cli.arguments import get_args, target_arg_to_type
+from cli.arguments import build_target_from_args
 from publishers.publisher_factory import PublisherFactory
 from generators import time_series_generator
 
 
 if __name__ == "__main__":
-    parser, args = get_args()
+    publish_target = build_target_from_args()
     publisher = PublisherFactory().create_publisher(
-        target_arg=args.target,
-        is_stream_arg=args.stream,
-        generator_func=time_series_generator
+        generator_func=time_series_generator,
+        target=publish_target
     )
-    publisher.publish_to_target(args.batch_size)
+    publisher.publish_to_target()

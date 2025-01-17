@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 main.py --batch-size 2048 --target console
+python3 main.py --target console --batch-size 2048 --stream

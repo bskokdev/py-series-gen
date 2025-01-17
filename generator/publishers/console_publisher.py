@@ -7,14 +7,14 @@ class ConsolePublisher(Publisher):
         Publisher (Publisher):
             abstract publisher implementation. Mainly handles the instance values, and publish stream.
     """
-    def publish_to_target(self, batch_size: int):
+    def publish_to_target(self):
         """Publish method which overrides the based impl., and sends data to the console output.
         We call the base impl at the end to ensure correct behaviour with the `is_stream` flag.
 
         Args:
             batch_size (int): Amount of data to be sent to the the console.
         """
-        for value in self._generator(batch_size):
+        for value in self._generator(self._target.batch_size):
             print(f'{value.timestamp} | {value.data}')
         
-        super().publish_to_target(batch_size)
+        super().publish_to_target()
