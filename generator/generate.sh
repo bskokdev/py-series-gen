@@ -1,2 +1,2 @@
 #!/bin/bash
-python3 series_generator.py --batch-size 2048
+python3 series_generator.py --batch-size 2048 --target console
