@@ -1,11 +1,13 @@
 from .publisher import Publisher
 from .console_publisher import ConsolePublisher
+from .targets import TargetType
+from cli.arguments import args_to_target
 
 
 class PublisherFactory():
     """Factory class which constructs new publishers."""
     @staticmethod
-    def create_publisher(target: str, is_stream: bool, generator_func: any) -> Publisher:
+    def create_publisher(target_arg: str, is_stream_arg: bool, generator_func: any) -> Publisher:
         """The main factory method which takes in publish cli args,
         and a generator function and creates a new publisher based on these arguments.
 
@@ -20,9 +22,9 @@ class PublisherFactory():
         Returns:
             Publisher: concrete publisher implementation
         """
-        match target:
-            case 'console':
-                return ConsolePublisher(generator_fun=generator_func, is_stream=is_stream)
+        match args_to_target[target_arg]:
+            case TargetType.console:
+                return ConsolePublisher(generator_fun=generator_func, is_stream=is_stream_arg)
             case _:
                 raise ValueError('Target was not provided or no such target exists.')
         
