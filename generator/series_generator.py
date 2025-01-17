@@ -1,7 +1,9 @@
 from argparse import ArgumentParser, Namespace
 from datetime import datetime
+from typing import Any
 from values import TimeSeriesValue
 from publishers.console_publisher import ConsolePublisher
+from publishers.publisher import Publisher
 from datetime import datetime, timedelta
 
 from mockseries.utils import datetime_range
@@ -57,16 +59,18 @@ def time_series_generator(batch_size: int):
 def get_args() -> Namespace:
     parser = ArgumentParser()
     parser.add_argument('--batch-size', dest='batch_size', type=int)
-    parser.add_argument('--stream', dest='stream', type=bool)  # (while True: publish)
+    # This flag will cause the publisher to repeatedly send the batch to the target
+    parser.add_argument('--stream', dest='stream', action='store_true', default=False)
     return parser.parse_args()
 
+def handle_input(args: Any, publisher: Publisher):
+    if args.stream:
+        while True:
+            publisher.publish_to_target(batch_size=args.batch_size)
+    else:
+        publisher.publish_to_target(batch_size=args.batch_size)
 
 if __name__ == "__main__":
     args = get_args()
     console_publisher = ConsolePublisher(time_series_generator)
-    # console_publisher.publish_to_target(batch_size=args.batch_size)
-    if args.stream:
-        while True:
-            console_publisher.publish_to_target(batch_size=args.batch_size)
-    else:
-        pass
+    handle_input(args, console_publisher)
