@@ -4,7 +4,7 @@ from typing import Tuple
 
 from publishers.targets import TargetType
 
-args_to_target = defaultdict(None, {
+target_arg_to_type = defaultdict(None, {
     'console': TargetType.console,
     'kafka': TargetType.kafka
 })

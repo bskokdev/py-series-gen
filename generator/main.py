@@ -1,4 +1,4 @@
-from cli.arguments import get_args, args_to_target
+from cli.arguments import get_args, target_arg_to_type
 from publishers.publisher_factory import PublisherFactory
 from generators import time_series_generator
 

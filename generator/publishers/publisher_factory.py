@@ -1,7 +1,7 @@
 from .publisher import Publisher
 from .console_publisher import ConsolePublisher
 from .targets import TargetType
-from cli.arguments import args_to_target
+from cli.arguments import target_arg_to_type
 
 
 class PublisherFactory():
@@ -22,7 +22,7 @@ class PublisherFactory():
         Returns:
             Publisher: concrete publisher implementation
         """
-        match args_to_target[target_arg]:
+        match target_arg_to_type[target_arg]:
             case TargetType.console:
                 return ConsolePublisher(generator_fun=generator_func, is_stream=is_stream_arg)
             case _:
