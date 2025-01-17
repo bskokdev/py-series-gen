@@ -1,3 +1,4 @@
+from typing import Any
 from . import ConsolePublisher, Publisher
 from .targets import TargetType, Target
 
@@ -5,7 +6,7 @@ from .targets import TargetType, Target
 class PublisherFactory:
     """Factory class which constructs new publishers."""
     @staticmethod
-    def create_publisher(generator_func: any, target: Target) -> Publisher:
+    def create_publisher(generator_func: Any, target: Target) -> Publisher:
         """The main factory method which takes in publish cli args,
         and a generator function and creates a new publisher based on these arguments.
 
