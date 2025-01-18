@@ -8,6 +8,7 @@ from mockseries.signal.signal import Signal
 
 from values import Value
 
+
 def _define_time_series() -> Signal:
     """This only defines properties of the time series we're constructing
 
@@ -15,12 +16,18 @@ def _define_time_series() -> Signal:
         Signal: Interface representing any type of signal.
     """
     # TODO: I believe it'd be much better if the below values would be random
-    trend = LinearTrend(coefficient=2, time_unit=timedelta(days=4), flat_base=100) # long term change
-    seasonality = SinusoidalSeasonality(amplitude=20, period=timedelta(days=7)) \
-        + SinusoidalSeasonality(amplitude=4, period=timedelta(days=1)) # repeating pattern
-    noise = RedNoise(mean=0, std=3, correlation=0.5) # random changes
+    trend = LinearTrend(
+        coefficient=2, time_unit=timedelta(days=4), flat_base=100
+    )  # long term change
+    seasonality = SinusoidalSeasonality(
+        amplitude=20, period=timedelta(days=7)
+    ) + SinusoidalSeasonality(
+        amplitude=4, period=timedelta(days=1)
+    )  # repeating pattern
+    noise = RedNoise(mean=0, std=3, correlation=0.5)  # random changes
     timeseries = trend + seasonality + noise
     return timeseries
+
 
 def time_series_generator(batch_size: int):
     """Generates time series values of size `batch_size` and yields them to the generator customer.
@@ -33,7 +40,7 @@ def time_series_generator(batch_size: int):
     """
     if batch_size < 0:
         return
-    
+
     timeseries = _define_time_series()
     chunk_size = min(batch_size, 1024)
     for start in range(0, batch_size, chunk_size):
@@ -43,11 +50,12 @@ def time_series_generator(batch_size: int):
         timestamps = datetime_range(
             granularity=timedelta(seconds=1),
             start_time=datetime(2025, 1, 1) + timedelta(seconds=start),
-            num_points=curr_chunk_size
+            num_points=curr_chunk_size,
         )
         data_points = timeseries.generate(time_points=timestamps)
 
         # yield from provides better performance because it handles the iteration at the C level rather than in Python code
         yield from (
-            Value(data=(time_point, data_point)) for time_point, data_point in zip(timestamps, data_points)
+            Value(data=(time_point, data_point))
+            for time_point, data_point in zip(timestamps, data_points)
         )

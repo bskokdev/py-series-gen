@@ -5,6 +5,7 @@ from .targets import TargetType, Target
 
 class PublisherFactory:
     """Factory class which constructs new publishers."""
+
     @staticmethod
     def create_publisher(generator_func: Any, target: Target) -> Publisher:
         """The main factory method which takes in publish cli args,
@@ -24,5 +25,4 @@ class PublisherFactory:
             case TargetType.console:
                 return ConsolePublisher(generator_fun=generator_func, target=target)
             case _:
-                raise ValueError('Target was not provided or no such target exists.')
-        
+                raise ValueError("Target was not provided or no such target exists.")
