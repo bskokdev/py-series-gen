@@ -19,15 +19,20 @@ specific_target_args: Dict[TargetType, List[Tuple[str, str, Any]]] = defaultdict
     # ]
 })
 
-def _attach_target_args(parser: ArgumentParser, specific_args_list: List[Tuple[str, str, Any]]):
-    """Attaches specific target arguments to the argument parser
+def _attach_target_args(parser: ArgumentParser, target_type: TargetType):
+    """Attaches specific target arguments to the argument parser if target type is matched
 
     Args:
         parser (ArgumentParser): Parser to which the arguments are attached to
-        specific_args_list (List[Tuple]): List of arguments which are specific to some target type.
-            See the mapping above
+        target_type (TargetType): Type of the publish target to send the data to.
+            This has to be valid, in order to attach the correct arguments
     """
-    for argument, variable, dtype in specific_args_list:
+    if target_type not in specific_target_args:
+        return
+    
+    for argument, variable, dtype in specific_target_args[target_type]:
+        # argument is '--something'
+        # variable is the memory buffer where the argument value will be stored (args.variable)
         parser.add_argument(argument, dest=variable, type=dtype)
     
 
@@ -46,8 +51,7 @@ def build_target_from_args() -> Target:
     temp_args, _ = parser.parse_known_args() # only used to access the target argument
 
     target_type = target_arg_to_type[temp_args.target]
-    if target_type in specific_target_args:
-        _attach_target_args(parser, specific_target_args[target_type])
+    _attach_target_args(parser, target_type)
     
     final_args = parser.parse_args()
     return TargetFactory().create_target(target_type=target_type, args=final_args)
