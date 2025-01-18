@@ -23,7 +23,7 @@ pip install -r requirements.txt
 ## Usage
 With basic arguments (used also for console target)
 ```bash
-python3 main.py --target <specific_target> --batch-size <data_size> [--stream]
+python3 py_series_gen.py --target <specific_target> --batch-size <data_size> [--stream]
 ```
 
 With Kafka arguments
@@ -47,10 +47,10 @@ I have included some helpful scripts directly in the repository which you can ru
 ### Examples
 ```bash
 # Generate data and output to console in streaming mode with batch size of 2048
-python3 main.py --target console --batch-size 2048 --stream
+python3 py_series_gen.py --target console --batch-size 2048 --stream
 
 # Generate a single batch of 1000 records to console
-python3 main.py --target console --batch-size 1000
+python3 py_series_gen.py --target console --batch-size 1000
 ```
 
 ### Architecture
