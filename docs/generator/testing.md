@@ -3,7 +3,7 @@
 There should be 2 kinds of tests present in the generator
 - Unit tests for complex logical functionalities (such as chunk splitting the batches)
 - Integration tests for each new PublishTarget
-    - Whenever a new target and publisher are added, a new integration test should be added as well
+    - Whenever a new target and publisher are added, a new integration test case should be added as well
     - This can probably be ignored for the ConsolePublisher, and ConsoleTarget as they don't have a real value
 
 ### How to run the tests

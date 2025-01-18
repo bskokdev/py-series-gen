@@ -12,7 +12,7 @@ target_arg_to_type: Dict[str, TargetType] = defaultdict(
 # Maps a target type to a list of arguments specific to such type
 # This is where you add specific arguments for each target type (console, kafka, etc.)
 specific_target_args: Dict[TargetType, List[Tuple[str, str, Any]]] = defaultdict(
-    None,
+    list,
     {
         # Example usage:
         # TargetType.console: [
@@ -54,9 +54,9 @@ def build_target_from_args() -> Target:
     )
 
     temp_args, _ = parser.parse_known_args()  # only used to access the target argument
-
-    target_type = target_arg_to_type[temp_args.target]
-    _attach_target_args(parser, target_type)
+    if temp_args.target in target_arg_to_type:
+        target_type = target_arg_to_type[temp_args.target]
+        _attach_target_args(parser, target_type)
 
     final_args = parser.parse_args()
     return TargetFactory().create_target(target_type=target_type, args=final_args)

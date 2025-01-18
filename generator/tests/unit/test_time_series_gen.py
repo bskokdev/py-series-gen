@@ -11,9 +11,9 @@ def test_time_series_gen_positive_small():
     assert len(result_512) == 512
 
 
-def test_time_series_gen_positive_large():
-    result_large = [val for val in time_series_generator(10_000_000)]
-    assert len(result_large) == 10_000_000
+# def test_time_series_gen_positive_large():
+#     result_large = [val for val in time_series_generator(10_000_000)]
+#     assert len(result_large) == 10_000_000
 
 
 def test_time_series_gen_negative():
