@@ -14,6 +14,7 @@ def _define_time_series() -> Signal:
     Returns:
         Signal: Interface representing any type of signal.
     """
+    # TODO: I believe it'd be much better if the below values would be random
     trend = LinearTrend(coefficient=2, time_unit=timedelta(days=4), flat_base=100) # long term change
     seasonality = SinusoidalSeasonality(amplitude=20, period=timedelta(days=7)) \
         + SinusoidalSeasonality(amplitude=4, period=timedelta(days=1)) # repeating pattern

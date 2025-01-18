@@ -16,7 +16,8 @@ class Publisher(ABC):
     @abstractmethod
     def publish_to_target(self):
         """Abstract implementation of the publish method.
-        If the is_stream argument == True in the target, we recurse on the method and continue the publish stream
+        If the is_stream argument == True in the target, we recurse on the method and continue the publish stream.
+        Also in this method we can read all the arguments passed to the publisher (to establish connection, etc.)
         """
         if self._target.is_stream:
             self.publish_to_target()
