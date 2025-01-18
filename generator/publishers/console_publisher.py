@@ -13,7 +13,6 @@ class ConsolePublisher(Publisher):
         """Publish method which overrides the based impl., and sends data to the console output.
         We call the base impl at the end to ensure correct behaviour with the `is_stream` flag.
         """
-        for value in self._generator(self._target.batch_size):
-            print(value.data)
-
-        super().publish_to_target()
+        while self._target.is_stream:
+            for value in self._generator(self._target.batch_size):
+                print(value.data)
