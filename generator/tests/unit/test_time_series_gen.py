@@ -1,3 +1,4 @@
+import os
 import pytest
 
 from generators import time_series_generator
@@ -11,9 +12,13 @@ def test_time_series_gen_positive_small():
     assert len(result_512) == 512
 
 
-# def test_time_series_gen_positive_large():
-#     result_large = [val for val in time_series_generator(10_000_000)]
-#     assert len(result_large) == 10_000_000
+@pytest.mark.skipif(
+    os.environ.get("CI") != "true",
+    reason="Skip on local runs because it takes too long, but run in CI",
+)
+def test_time_series_gen_positive_large():
+    result_large = [val for val in time_series_generator(100_000_000)]
+    assert len(result_large) == 100_000_000
 
 
 def test_time_series_gen_negative():
