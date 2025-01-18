@@ -10,7 +10,7 @@ from values import Value
     [
         {
             "name": "console",
-            "args": ["main.py", "--target", "console", "--batch-size", "2048"],
+            "args": ["test.py", "--target", "console", "--batch-size", "2048"],
             "batch_size": 2048,
             # this lamba function verifies the correct output, based on the passed parameters (output, batch_size)
             # if all are true, it evaluates to true, so the assertion passes in the test
