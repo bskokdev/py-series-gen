@@ -61,7 +61,7 @@ def build_target_from_args() -> Target:
     args = parser.parse_args()
 
     if not args.target:
-        parser.error("Target type must be specified")
+        parser.error("Target type must be specified (--target TARGET)")
 
     target_type = target_arg_to_type[args.target]
 
