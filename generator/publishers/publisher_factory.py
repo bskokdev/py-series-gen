@@ -1,6 +1,10 @@
 from typing import Any
+
+from .targets import ConsoleTarget, KafkaTarget
+
+from .kafka_publisher import KafkaPublisher
 from . import ConsolePublisher, Publisher
-from .targets import TargetType, Target
+from .targets import Target
 
 
 class PublisherFactory:
@@ -16,13 +20,17 @@ class PublisherFactory:
             generator_func (any): generator function which creates the data
 
         Raises:
-            ValueError: ValueError is raised if arguments don't match the pattern matching cases
+            ValueError: Raised if arguments don't match the pattern matched publisher
+            TypeError: Raised if target type doesn't match any of existing types
 
         Returns:
             Publisher: concrete publisher implementation
         """
-        match target.type:
-            case TargetType.console:
+
+        match target:
+            case ConsoleTarget():
                 return ConsolePublisher(generator_fun=generator_func, target=target)
+            case KafkaTarget():
+                return KafkaPublisher(generator_fun=generator_func, target=target)
             case _:
-                raise ValueError("Target was not provided or no such target exists.")
+                raise TypeError("Target was not provided or no such target exists.")

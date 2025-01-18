@@ -14,6 +14,20 @@ class Publisher(ABC):
         super().__init__()
         self._target = target
         self._generator = generator_fun
+        self._validate_publisher()
+
+    def _validate_publisher(self):
+        """Validates this every publisher, so it contains both generator function, and respective target
+
+        Raises:
+            ValueError: Raised if either the generator or target are not present in the publisher
+        """
+        if not self._target:
+            raise ValueError("Target has to be specified for every publisher.")
+        elif not self._generator:
+            raise ValueError(
+                "Generator has to be provided to publisher in order to generate the data"
+            )
 
     @abstractmethod
     def publish_to_target(self):
