@@ -22,7 +22,6 @@ def _define_time_series() -> Signal:
     timeseries = trend + seasonality + noise
     return timeseries
 
-# TODO: add tests for this function
 def time_series_generator(batch_size: int):
     """Generates time series values of size `batch_size` and yields them to the generator customer.
     we split the batch-size into chunks, this allows computer to store less data in the memory buffer
@@ -32,6 +31,8 @@ def time_series_generator(batch_size: int):
     Args:
         batch_size (int): how many values should be generated in total
     """
+    if batch_size < 0:
+        return
     
     timeseries = _define_time_series()
     chunk_size = min(batch_size, 1024)
