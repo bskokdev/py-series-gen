@@ -40,6 +40,7 @@ from values import Value
         # },
     ],
 )
+@pytest.mark.integration_test
 def test_publisher_integration(publisher_config, capsys, monkeypatch):
     # this modifies the runtime arguments to the ones set in the publisher_config
     monkeypatch.setattr("sys.argv", publisher_config["args"])
