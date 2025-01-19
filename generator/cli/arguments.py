@@ -1,4 +1,4 @@
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from collections import defaultdict
 from typing import Any, Dict, List, Tuple
 
@@ -51,9 +51,16 @@ def _attach_default_args(parser: ArgumentParser):
         default=False,
         help="Should the batch be sent repeatedly",
     )
+    parser.add_argument(
+        "--debug",
+        dest="debug",
+        action="store_true",
+        default=False,
+        help="Should the process run in debug mode",
+    )
 
 
-def create_parser_with_all_args() -> ArgumentParser:
+def create_parser_with_all_args() -> Tuple[ArgumentParser, Namespace]:
     parser = ArgumentParser(formatter_class=TargetHelpFormatter)
     _attach_default_args(parser)
 
@@ -63,18 +70,14 @@ def create_parser_with_all_args() -> ArgumentParser:
         for argument, variable, dtype, help_str in args:
             group.add_argument(argument, dest=variable, type=dtype, help=help_str)
 
-    return parser
+    return parser, parser.parse_args()
 
 
-def build_target_from_args() -> Target:
-    parser = create_parser_with_all_args()
-    args = parser.parse_args()
-
+def build_target_from_args(parser: ArgumentParser, args: Namespace) -> Target:
     if not args.target:
         parser.error("Target type must be specified (--target TARGET)")
 
     target_type = target_arg_to_type[args.target]
-
     try:
         return TargetFactory().create_target(target_type=target_type, args=args)
     except Exception as e:
