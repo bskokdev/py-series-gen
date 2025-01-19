@@ -12,12 +12,22 @@ target_arg_to_type: Dict[str, TargetType] = defaultdict(
 
 # Maps a target type to a list of arguments specific to such type
 # This is where you add specific arguments for each target type (console, kafka, etc.)
-specific_target_args: Dict[TargetType, List[Tuple[str, str, Any]]] = defaultdict(
+specific_target_args: Dict[TargetType, List[Tuple[str, str, Any, str]]] = defaultdict(
     list,
     {
         TargetType.kafka: [
-            ("--bootstrap-server", "bootstrap_server", str, "Address of the broker"),
-            ("--port", "port", str, "Port at which the broker process is running"),
+            (
+                "--bootstrap-server",
+                "bootstrap_server",
+                str,
+                "Address of the broker",
+            ),
+            (
+                "--port",
+                "port",
+                str,
+                "Port at which the broker process is running",
+            ),
             ("--topic", "kafka_topic", str, "Kafka topic to send the data to"),
         ]
     },
