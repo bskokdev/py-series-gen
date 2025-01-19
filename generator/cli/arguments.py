@@ -20,7 +20,7 @@ specific_target_args: Dict[TargetType, List[Tuple[str, str, Any, str]]] = defaul
                 "--bootstrap-server",
                 "bootstrap_server",
                 str,
-                "Address of the broker",
+                "Address of the bootstrap server",
             ),
             (
                 "--port",
@@ -29,6 +29,7 @@ specific_target_args: Dict[TargetType, List[Tuple[str, str, Any, str]]] = defaul
                 "Port at which the broker process is running",
             ),
             ("--topic", "kafka_topic", str, "Kafka topic to send the data to"),
+            # TODO: expand the arguments further, if possible
         ]
     },
 )

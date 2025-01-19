@@ -30,6 +30,20 @@ class Publisher(ABC):
             )
 
     @abstractmethod
-    def publish_to_target(self):
-        """Abstract publish method"""
+    def publish_batch(self):
+        """Abstract method for publishing a single batch to the target.
+        This has to be implemented by the concrete implementations of this class.
+        """
         pass
+
+    def publish_stream(self):
+        """Keeps publishing batches to the target unless the process is stopped"""
+        while self._target.is_stream:
+            self.publish_batch()
+
+    def publish_to_target(self):
+        if not self._target.is_stream:
+            self.publish_batch()
+            return
+
+        self.publish_stream()
