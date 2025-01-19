@@ -2,8 +2,8 @@
 A flexible Python-based data generation tool that creates and publishes data streams using Python generators. This tool is designed to be extensible and configurable through command-line arguments, and custom generator functions.
 
 ## Features
-- 🔄 Streaming data generation using Python generator functions (only time series generator now available)
-- 🎯 Multiple publish targets support (currently Console, Kafka coming soon)
+- 🔄 Streaming data generation using Python generator functions (only time series generator available for now)
+- 🎯 Multiple publish targets support (currently Console, and Kafka)
 - ⚡ Efficient batch processing
 - 🛠️ Configurable through CLI arguments
 - 🔌 Extensible architecture for adding new publish targets
@@ -17,19 +17,23 @@ git clone https://github.com/bskokdev/py-series-gen.git
 cd py-series-gen/generator
 
 # Install dependencies
+# Consider creating a virtual environment before running this step
 pip install -r requirements.txt
 ```
 
 ## Usage
-With basic arguments (used also for console target)
-```bash
-python3 py_series_gen.py --target <specific_target> --batch-size <data_size> [--stream]
-```
 
-With Kafka arguments
-```bash
-# coming soon
-```
+#### Default Arguments
+`--target <TARGET_TYPE>` - Specifies the publish target (e.g., console, kafka)
+`--batch-size <DATA_SIZE>` - Sets the size of data batches to generate
+`--stream` - Enables streaming mode. For now this means, the batches are sent repeatedly to the target.
+
+#### Kafka Arguments
+`--bootstrap-server <SERVER_ADDRESS>` - Tells the program where is the Kafka bootstrap-server running
+`--port <PORT>` - On which port the bootstrap-server runs
+`--topic <KAFKA TOPIC>` - Specifies the topic the data should be generated to
+
+If you more need help, you can use `--help` argument to view all supported arguments, and usages.
 
 ## Scripts for you to use
 I have included some helpful scripts directly in the repository which you can run (check out `generator/scripts` directory).
@@ -39,18 +43,17 @@ I have included some helpful scripts directly in the repository which you can ru
 - `unit-tests.sh` - Runs unit tests (marked with `@pytest.mark.unit_test` decorator)
 - `integration-tests.sh` - Runs integration tests (marked with `@pytest.mark.integration_test` decorator)
 
-## Default arguments for a publisher
-`--target <TARGET_TYPE>` - Specifies the publish target (e.g., console, kafka)
-`--batch-size <DATA_SIZE>` - Sets the size of data batches to generate
-`--stream` - Enables streaming mode. For now this means, the batches are sent repeatedly to the target.
 
 ### Examples
 ```bash
-# Generate data and output to console in streaming mode with batch size of 2048
+# Stream batches of data to the console, each batch contains 2048 values
 python3 py_series_gen.py --target console --batch-size 2048 --stream
 
-# Generate a single batch of 1000 records to console
+# Generate a single batch of 1000 values to the console
 python3 py_series_gen.py --target console --batch-size 1000
+
+# Stream batches of size 32 to the `py-topic` Kafka topic which is present at localhost:9092
+python3 py_series_gen.py --target kafka --batch-size 32 --bootstrap-server localhost --port 9092 --topic py-topic --stream
 ```
 
 ### Architecture
