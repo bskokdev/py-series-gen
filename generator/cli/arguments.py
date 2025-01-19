@@ -25,7 +25,7 @@ specific_target_args: Dict[TargetType, List[Tuple[str, str, Any, str]]] = defaul
             (
                 "--port",
                 "port",
-                str,
+                int,
                 "Port at which the broker process is running",
             ),
             ("--topic", "kafka_topic", str, "Kafka topic to send the data to"),
@@ -67,7 +67,7 @@ def create_parser_with_all_args() -> Tuple[ArgumentParser, Namespace]:
 
     # Add all target-specific arguments with their target type as a prefix
     for target_type, args in specific_target_args.items():
-        group = parser.add_argument_group(f"{target_type.name} specific arguments")
+        group = parser.add_argument_group(f"{target_type.name} arguments")
         for argument, variable, dtype, help_str in args:
             group.add_argument(argument, dest=variable, type=dtype, help=help_str)
 

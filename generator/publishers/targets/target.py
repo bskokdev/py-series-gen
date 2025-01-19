@@ -24,3 +24,6 @@ class Target(ABC):
 
     def __repr__(self):
         return repr(f"<batch-size={self.batch_size}, is_stream={self.is_stream}>")
+
+    def __eq__(self, other):
+        return self.__dict__ == other.__dict__ if type(self) == type(other) else False
