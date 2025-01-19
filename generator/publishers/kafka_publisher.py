@@ -1,6 +1,8 @@
 from .targets import KafkaTarget
 from . import Publisher
 from confluent_kafka import Producer
+from confluent_kafka.serialization import StringSerializer
+from uuid import uuid4
 
 
 class KafkaPublisher(Publisher):
@@ -8,6 +10,7 @@ class KafkaPublisher(Publisher):
         super().__init__(generator_fun, target)
         self._producer_config = {"bootstrap.servers": self._target.full_server_address}
         self._producer = Producer(self._producer_config)
+        self._string_serializer = StringSerializer("utf_8")
 
     @staticmethod
     def delivery_report(err, msg):
@@ -27,10 +30,11 @@ class KafkaPublisher(Publisher):
                 "Wrong target type provided to the kafka publisher, expecting KafkaTarget"
             )
 
-        for _ in self._generator(self._target.batch_size):
+        for value in self._generator(self._target.batch_size):
             self._producer.produce(
-                "py-topic",
-                "test message",
+                topic="py-topic",
+                key=self._string_serializer(str(uuid4())),
+                value=value.serialize(),
                 callback=self.delivery_report,
             )
         self._producer.flush()

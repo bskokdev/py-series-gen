@@ -56,6 +56,6 @@ def time_series_generator(batch_size: int):
 
         # yield from provides better performance because it handles the iteration at the C level rather than in Python code
         yield from (
-            Value(data=(time_point, data_point))
+            Value(data=(str(time_point), str(data_point)))
             for time_point, data_point in zip(timestamps, data_points)
         )
