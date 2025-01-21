@@ -46,7 +46,7 @@ class KafkaPublisher(Publisher):
 
         for value in self._generator(self._target.batch_size):
             self._producer.produce(
-                topic="py-topic",
+                topic=self._target.kafka_topic,
                 key=self._string_serializer(str(uuid4())),
                 value=value.serialize(),
                 callback=self.delivery_report,
