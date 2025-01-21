@@ -83,3 +83,8 @@ def build_target_from_args(parser: ArgumentParser, args: Namespace) -> Target:
         return TargetFactory().create_target(target_type=target_type, args=args)
     except Exception as e:
         parser.error(str(e))
+
+
+def are_core_args_valid(args: Namespace):
+    # core arguments are: --target, and --batch-size (batch_size variable)
+    return args.target and args.batch_size

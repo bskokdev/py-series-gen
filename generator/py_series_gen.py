@@ -1,11 +1,31 @@
 from argparse import ArgumentParser, Namespace
-from cli.arguments import build_target_from_args, create_parser_with_all_args
+from cli.arguments import (
+    build_target_from_args,
+    create_parser_with_all_args,
+    are_core_args_valid,
+)
 from publishers.publisher_factory import PublisherFactory
 from generators import time_series_generator
 
 
-def run(arg_parser: ArgumentParser, arguments: Namespace):
-    publish_target = build_target_from_args(parser=arg_parser, args=arguments)
+def run(arg_parser: ArgumentParser, args: Namespace):
+    """Main function of the entire program which creates a target object from given arguments.
+    Then a publisher is created based on that target via a factory.
+
+    Args:
+        arg_parser (ArgumentParser): An object resposible for handling CLI args
+        args (Namespace): Arguments parsed by the parser (access via args.<variable>)
+
+    Raises:
+        ValueError: Raised if any of the core arguments is not provided
+    """
+    if not are_core_args_valid(args=args):
+        arg_parser.print_usage()
+        raise ValueError(
+            "both --target, and --batch-size arguments have to be provided"
+        )
+
+    publish_target = build_target_from_args(parser=arg_parser, args=args)
     publisher = PublisherFactory().create_publisher(
         generator_func=time_series_generator, target=publish_target
     )
@@ -16,9 +36,9 @@ if __name__ == "__main__":
     arg_parser, arguments = create_parser_with_all_args()
     if arguments.debug:
         # the debug run without try except block
-        run(arg_parser=arg_parser, arguments=arguments)
+        run(arg_parser=arg_parser, args=arguments)
     else:
         try:
-            run(arg_parser=arg_parser, arguments=arguments)
+            run(arg_parser=arg_parser, args=arguments)
         except Exception as e:
             print(str(e))

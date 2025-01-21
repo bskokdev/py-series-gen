@@ -17,6 +17,8 @@ class KafkaTarget(Target):
         batch_size: int = 0,
         is_stream: bool = False,
     ):
+        self._server_address = bootstrap_server
+        self._server_port = server_port
         self.full_server_address = f"{bootstrap_server}:{str(server_port)}"
         self.kafka_topic = kafka_topic
         super().__init__(batch_size=batch_size, is_stream=is_stream)
@@ -27,9 +29,13 @@ class KafkaTarget(Target):
         Raises:
             ValueError: Raised if either kafka server, or topic are not provided.
         """
-        if not self.full_server_address:
+        if not self._server_address:
             raise ValueError(
-                "Kafka bootstrap server has to be specified (--bootstrap-server ADDRESS && --port PORT)"
+                "Kafka bootstrap server has to be specified (--bootstrap-server ADDRESS)"
+            )
+        elif not self._server_port:
+            raise ValueError(
+                "Kafka bootstrap server's port has to be specified (--port PORT)"
             )
         elif not self.kafka_topic:
             raise ValueError("Kafka topic has to be specified (--topic TOPIC_NAME)")
