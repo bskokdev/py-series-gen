@@ -43,6 +43,29 @@ I have included some helpful scripts directly in the repository which you can ru
 - `unit-tests.sh` - Runs unit tests (marked with `@pytest.mark.unit_test` decorator)
 - `integration-tests.sh` - Runs integration tests (marked with `@pytest.mark.integration_test` decorator)
 
+## Testing 
+
+For testing I've used pytest, since it has a good support for fixtures, allows custom marks, and is generally very simple to use, and provides more features than the unittest Python module. 
+
+Currently there are defined 2 custom marks:
+* `unit_test` - this annonates the unit tests
+* `integration_test` - this annonates the integrations tests
+
+
+#### How to run (specific) tests
+NOTE: some tests are disabled locally, as they would take too long to pass, and that's quite annoying.
+
+```bash
+# To run all tests 
+pytest
+
+# To run obly the unit tests
+pytest -v -m unit_test
+
+# To run obly the integration tests
+pytest -v -m integration_test
+```
+
 
 ### Examples
 ```bash
@@ -60,7 +83,7 @@ python3 py_series_gen.py --target kafka --batch-size 32 --bootstrap-server local
 The generator is built with a modular architecture (see docs for more). The 3 main concepts are Publishers, Targets, and generator functions. Both Publishers, and Targers are generated dynamically from the CLI arguments by their respective factories. The generator functions are implemented for each supported publish target.
 
 - Publish Targets: Handle the state for different destinations
-- PublisherFactory: Creates appropriate publisher instances based on target
+- Publishers: These are responsible for the actual data sending to the data destinations
 - Generator Functions: Produce the actual data (e.g., time_series_generator)
 
 ### Extending
