@@ -36,6 +36,11 @@ specific_target_args: Dict[TargetType, List[Tuple[str, str, Any, str]]] = defaul
 
 
 def _attach_default_args(parser: ArgumentParser):
+    """Attaches defaulty supported arguments to the parser.
+
+    Args:
+        parser (ArgumentParser): An object which handles all the arguments state
+    """
     parser.add_argument(
         "--target", dest="target", type=str, help="Destination to publish the data to"
     )
@@ -62,6 +67,13 @@ def _attach_default_args(parser: ArgumentParser):
 
 
 def create_parser_with_all_args() -> Tuple[ArgumentParser, Namespace]:
+    """Constructs a parser with all supported arguments in the application.
+    Utilizes mapping of :
+        * target type -> list of arguments specific to that type
+
+    Returns:
+        Tuple[ArgumentParser, Namespace]: parser, and the complete argument namespace
+    """
     parser = ArgumentParser(formatter_class=TargetHelpFormatter)
     _attach_default_args(parser)
 
@@ -75,6 +87,17 @@ def create_parser_with_all_args() -> Tuple[ArgumentParser, Namespace]:
 
 
 def build_target_from_args(parser: ArgumentParser, args: Namespace) -> Target:
+    """Build a target object (state supplied to a publisher) from the CLI arguments.
+    We cast the --target argument to an argument type via mapping:
+        * target str -> target type
+
+    Args:
+        parser (ArgumentParser): An object which handles all the arguments state
+        args (Namespace): All arguments wrapped in a namespace object
+
+    Returns:
+        Target: A target object which is a state supplied to a publisher
+    """
     if not args.target:
         parser.error("Target type must be specified (--target TARGET)")
 
@@ -85,6 +108,21 @@ def build_target_from_args(parser: ArgumentParser, args: Namespace) -> Target:
         parser.error(str(e))
 
 
-def are_core_args_valid(args: Namespace):
-    # core arguments are: --target, and --batch-size (batch_size variable)
-    return args.target and args.batch_size
+def verify_core_args(parser: ArgumentParser, args: Namespace):
+    """Verifies core runtime arguments (target, and batch_size).
+    If one of them doesn't match the expected value a ValueError is raised.
+
+    Args:
+        args (Namespace): An entire namespace of arguments from parser
+
+    Raises:
+        ValueError: Raised if target, or batch_size don't contain a valid value
+    """
+    if not args.target or args.target not in target_arg_to_type:
+        parser.error(
+            "Target type must be specified (--target TARGET). It's possible that such target isn't supported yet :("
+        )
+    if not args.batch_size or args.batch_size < 0:
+        parser.error(
+            "Batch size value must be specified (--batch-size SIZE) where SIZE is a POSITIVE INTEGER!"
+        )

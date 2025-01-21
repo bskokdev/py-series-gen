@@ -2,7 +2,7 @@ from argparse import ArgumentParser, Namespace
 from cli.arguments import (
     build_target_from_args,
     create_parser_with_all_args,
-    are_core_args_valid,
+    verify_core_args,
 )
 from publishers.publisher_factory import PublisherFactory
 from generators import time_series_generator
@@ -19,11 +19,7 @@ def run(arg_parser: ArgumentParser, args: Namespace):
     Raises:
         ValueError: Raised if any of the core arguments is not provided
     """
-    if not are_core_args_valid(args=args):
-        arg_parser.print_usage()
-        raise ValueError(
-            "both --target, and --batch-size arguments have to be provided"
-        )
+    verify_core_args(parser=arg_parser, args=args)
 
     publish_target = build_target_from_args(parser=arg_parser, args=args)
     publisher = PublisherFactory().create_publisher(
