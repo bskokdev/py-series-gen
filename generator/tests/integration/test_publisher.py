@@ -13,6 +13,8 @@ from confluent_kafka import Consumer
 
 @pytest.fixture
 def kafka_container() -> Generator[KafkaContainer, None, None]:
+    # NOTE: for some reason, using the same image as in the example kafka/docker-compose.yml
+    # didn't work, and caused a timeout during the container creation
     with KafkaContainer(image="confluentinc/cp-kafka:7.8.0") as kafka:
         yield kafka
 
