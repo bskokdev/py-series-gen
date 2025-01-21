@@ -42,6 +42,7 @@ class Publisher(ABC):
             self.publish_batch()
 
     def publish_to_target(self):
+        """Publishes batch, or streams the batches to the target"""
         if not self._target.is_stream:
             self.publish_batch()
             return
