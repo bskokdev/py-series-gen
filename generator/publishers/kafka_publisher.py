@@ -2,6 +2,8 @@ from .targets import KafkaTarget
 from . import Publisher
 from confluent_kafka import Producer
 from confluent_kafka.serialization import StringSerializer
+from confluent_kafka.error import KafkaException
+
 from uuid import uuid4
 
 
@@ -16,9 +18,27 @@ class KafkaPublisher(Publisher):
 
     def __init__(self, generator_fun, target: KafkaTarget):
         super().__init__(generator_fun, target)
-        self._producer_config = {"bootstrap.servers": target.full_server_address}
+        self._producer_config = {
+            "bootstrap.servers": target.full_server_address,
+            # both timeouts in ms
+            "socket.timeout.ms": 5_000,
+            "message.timeout.ms": 5_000,
+        }
+
         self._producer = Producer(self._producer_config)
         self._string_serializer = StringSerializer("utf_8")
+        self._verify_broker_connection()
+
+    def _verify_broker_connection(self):
+        """Verifies connection to the broker via making a metadata call.
+
+        Raises:
+            ConnectionError: Raised if the producer can't connect to the broker
+        """
+        try:
+            self._producer.list_topics(timeout=10)
+        except KafkaException as e:
+            raise ConnectionError(f"Failed to connect to Kafka broker: {str(e)}")
 
     @staticmethod
     def delivery_report(err: str, msg: str):
