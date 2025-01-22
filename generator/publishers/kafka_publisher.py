@@ -62,7 +62,8 @@ class KafkaPublisher(Publisher):
         """
         if not isinstance(self._target, KafkaTarget):
             raise TypeError(
-                "Wrong target type provided to the kafka publisher, expecting KafkaTarget"
+                "Wrong target type provided to the kafka publisher, expecting"
+                " KafkaTarget"
             )
 
         for value in self._generator(self._target.batch_size):

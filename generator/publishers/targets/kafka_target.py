@@ -31,16 +31,19 @@ class KafkaTarget(Target):
         """
         if not self._server_address:
             raise ValueError(
-                "Kafka bootstrap server has to be specified (--bootstrap-server ADDRESS)"
+                "Kafka bootstrap server has to be specified (--bootstrap-server"
+                " ADDRESS)"
             )
         elif not self._server_port:
             raise ValueError(
-                "Kafka bootstrap server's port has to be specified (--port PORT)"
+                "Kafka bootstrap server's port has to be specified (--port" " PORT)"
             )
         elif not self.kafka_topic:
             raise ValueError("Kafka topic has to be specified (--topic TOPIC_NAME)")
 
     def __repr__(self):
         return repr(
-            f"<<Base: {super().__repr__()}, bootstrap_server={self.full_server_address}, kafka_topic={self.kafka_topic}>"
+            f"<<Base: {super().__repr__()},"
+            f" bootstrap_server={self.full_server_address},"
+            f" kafka_topic={self.kafka_topic}>"
         )

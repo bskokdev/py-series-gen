@@ -26,7 +26,8 @@ class Publisher(ABC):
             raise ValueError("Target has to be specified for every publisher.")
         elif not self._generator:
             raise ValueError(
-                "Generator has to be provided to publisher in order to generate the data"
+                "Generator has to be provided to publisher in order to generate"
+                " the data"
             )
 
     @abstractmethod

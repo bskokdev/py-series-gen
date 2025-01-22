@@ -30,7 +30,12 @@ specific_target_args: Dict[TargetType, List[Tuple[str, str, Any, str]]] = defaul
                 int,
                 "Port at which the broker process is running",
             ),
-            ("--topic", "kafka_topic", str, "Kafka topic to send the data to"),
+            (
+                "--topic",
+                "kafka_topic",
+                str,
+                "Kafka topic to send the data to",
+            ),
             # TODO: expand the arguments further, if possible
         ]
     },
@@ -44,7 +49,10 @@ def _attach_default_args(parser: ArgumentParser):
         parser (ArgumentParser): An object which handles all the arguments state
     """
     parser.add_argument(
-        "--target", dest="target", type=str, help="Destination to publish the data to"
+        "--target",
+        dest="target",
+        type=str,
+        help="Destination to publish the data to",
     )
     parser.add_argument(
         "--batch-size",
@@ -122,9 +130,11 @@ def verify_core_args(parser: ArgumentParser, args: Namespace):
     """
     if not args.target or args.target not in target_arg_to_type:
         parser.error(
-            "Target type must be specified (--target TARGET). It's possible that such target isn't supported yet :("
+            "Target type must be specified (--target TARGET). It's possible"
+            " that such target isn't supported yet :("
         )
     if not args.batch_size or args.batch_size < 0:
         parser.error(
-            "Batch size value must be specified (--batch-size SIZE) where SIZE is a POSITIVE INTEGER!"
+            "Batch size value must be specified (--batch-size SIZE) where SIZE"
+            " is a POSITIVE INTEGER!"
         )

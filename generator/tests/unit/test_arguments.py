@@ -11,7 +11,10 @@ from publishers.targets.target import Target
 def all_args_parser_fixture() -> ArgumentParser:
     test_parser = ArgumentParser()
     test_parser.add_argument(
-        "--target", dest="target", type=str, help="Destination to publish the data to"
+        "--target",
+        dest="target",
+        type=str,
+        help="Destination to publish the data to",
     )
     test_parser.add_argument(
         "--batch-size",
