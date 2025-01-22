@@ -1,7 +1,7 @@
 import json
 from abc import ABC
 from dataclasses import dataclass
-from typing import Any, Tuple
+from typing import Tuple
 
 
 @dataclass

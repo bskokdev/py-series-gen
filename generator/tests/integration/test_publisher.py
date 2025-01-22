@@ -1,12 +1,11 @@
 from typing import Any, Generator, List
 
+import cli.arguments as cli
 import pytest
 from confluent_kafka import Consumer
 from confluent_kafka.admin import AdminClient, NewTopic
-from testcontainers.kafka import KafkaContainer
-
-from cli.arguments import build_target_from_args, create_parser_with_all_args
 from publishers.publisher_factory import PublisherFactory
+from testcontainers.kafka import KafkaContainer
 from values import Value
 
 
@@ -31,8 +30,8 @@ def _add_kafka_topic(admin: AdminClient, topic_name: str):
 
 def _run_integration():
     """This generilizes a single test run of the program"""
-    arg_parser, test_args = create_parser_with_all_args()
-    test_target = build_target_from_args(parser=arg_parser, args=test_args)
+    arg_parser, test_args = cli.create_parser_with_all_args()
+    test_target = cli.build_target_from_args(parser=arg_parser, args=test_args)
     publisher = PublisherFactory().create_publisher(
         generator_func=lambda batch_s: [Value(data=i) for i in range(batch_s)],
         target=test_target,

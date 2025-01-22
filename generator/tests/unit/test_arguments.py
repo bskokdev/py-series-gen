@@ -1,10 +1,9 @@
 from argparse import ArgumentParser, Namespace
 
+import cli.arguments as cli
 import pytest
-from cli.arguments import build_target_from_args, create_parser_with_all_args
 from publishers.targets.console_target import ConsoleTarget
 from publishers.targets.kafka_target import KafkaTarget
-from publishers.targets.target import Target
 
 
 @pytest.fixture
@@ -58,7 +57,7 @@ def test_create_parser_with_all_args(all_args_parser_fixture: ArgumentParser):
     defined_args = all_args_parser_fixture.parse_args()
     empty_args = Namespace()
 
-    _, created_args = create_parser_with_all_args()
+    _, created_args = cli.create_parser_with_all_args()
     assert defined_args.__eq__(created_args)
     assert not defined_args.__eq__(empty_args)
     for arg in vars(defined_args):
@@ -75,7 +74,7 @@ def test_build_target_from_args(kafka_args_fixture: Namespace):
         batch_size=32,
         is_stream=False,
     )
-    created_target = build_target_from_args(ArgumentParser(), kafka_args_fixture)
+    created_target = cli.build_target_from_args(ArgumentParser(), kafka_args_fixture)
 
     assert created_target.__eq__(expected_target)
     assert not created_target.__eq__(console_target)
