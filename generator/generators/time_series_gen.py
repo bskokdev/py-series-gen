@@ -5,6 +5,7 @@ from mockseries.seasonality import SinusoidalSeasonality
 from mockseries.signal.signal import Signal
 from mockseries.trend import LinearTrend
 from mockseries.utils import datetime_range
+
 from values import Value
 
 
@@ -14,7 +15,7 @@ def _define_time_series() -> Signal:
     Returns:
         Signal: Interface representing any type of signal.
     """
-    # TODO: I believe it'd be much better if the below values would be random
+    # TODO: I believe it'd be much better if the below values were random
     trend = LinearTrend(
         coefficient=2, time_unit=timedelta(days=4), flat_base=100
     )  # long term change

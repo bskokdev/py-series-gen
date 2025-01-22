@@ -1,7 +1,10 @@
 from argparse import ArgumentParser, Namespace
 
-from cli.arguments import (build_target_from_args, create_parser_with_all_args,
-                           verify_core_args)
+from cli.arguments import (
+    build_target_from_args,
+    create_parser_with_all_args,
+    verify_core_args,
+)
 from generators import time_series_generator
 from publishers.publisher_factory import PublisherFactory
 
