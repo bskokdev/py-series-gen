@@ -1,11 +1,12 @@
 from typing import Any, Generator, List
 
 import pytest
-from cli.arguments import build_target_from_args, create_parser_with_all_args
 from confluent_kafka import Consumer
 from confluent_kafka.admin import AdminClient, NewTopic
-from publishers.publisher_factory import PublisherFactory
 from testcontainers.kafka import KafkaContainer
+
+from cli.arguments import build_target_from_args, create_parser_with_all_args
+from publishers.publisher_factory import PublisherFactory
 from values import Value
 
 
@@ -52,7 +53,7 @@ def _listen_on_topics(consumer: Consumer, topic_names: List[str]) -> List[Any]:
         List[Any]: List of messages polled by the consumer
     """
     consumer.subscribe(topic_names)
-    received = []
+    received: List[Any] = []
     while True:
         message = consumer.poll(timeout=5.0)
         if not message:
