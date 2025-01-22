@@ -1,14 +1,13 @@
 from datetime import timedelta
 from typing import Any, Generator, List
+
 import pytest
-
 from cli.arguments import build_target_from_args, create_parser_with_all_args
-from publishers.publisher_factory import PublisherFactory
-from values import Value
-
-from testcontainers.kafka import KafkaContainer
-from confluent_kafka.admin import AdminClient, NewTopic
 from confluent_kafka import Consumer
+from confluent_kafka.admin import AdminClient, NewTopic
+from publishers.publisher_factory import PublisherFactory
+from testcontainers.kafka import KafkaContainer
+from values import Value
 
 
 @pytest.fixture

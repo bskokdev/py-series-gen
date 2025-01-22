@@ -1,6 +1,6 @@
 import os
-import pytest
 
+import pytest
 from generators import time_series_generator
 
 

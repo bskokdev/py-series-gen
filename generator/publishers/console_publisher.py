@@ -1,5 +1,5 @@
-from .targets import ConsoleTarget
 from .publisher import Publisher
+from .targets.console_target import ConsoleTarget
 
 
 class ConsolePublisher(Publisher):

@@ -2,8 +2,10 @@ from argparse import ArgumentParser, Namespace
 from collections import defaultdict
 from typing import Any, Dict, List, Tuple
 
+from publishers.targets.target import Target, TargetType
+from publishers.targets.target_factory import TargetFactory
+
 from .argument_formatter import TargetHelpFormatter
-from publishers.targets import TargetFactory, TargetType, Target
 
 # Maps a target type argument string to an actual enum class, for better typing
 target_arg_to_type: Dict[str, TargetType] = defaultdict(

@@ -1,8 +1,8 @@
 from argparse import ArgumentParser, Namespace
-import pytest
 
-from cli.arguments import create_parser_with_all_args, build_target_from_args
-from publishers.targets import KafkaTarget, ConsoleTarget, Target
+import pytest
+from cli.arguments import build_target_from_args, create_parser_with_all_args
+from publishers.targets import ConsoleTarget, KafkaTarget, Target
 
 
 @pytest.fixture

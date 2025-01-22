@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from .targets import Target
+from .targets.target import Target
 
 
 class Publisher(ABC):

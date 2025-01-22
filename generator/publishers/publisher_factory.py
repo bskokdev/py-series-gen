@@ -1,10 +1,10 @@
 from typing import Any
 
-from .targets import ConsoleTarget, KafkaTarget
-
-from .kafka_publisher import KafkaPublisher
 from . import ConsolePublisher, Publisher
-from .targets import Target
+from .kafka_publisher import KafkaPublisher
+from .targets.console_target import ConsoleTarget
+from .targets.kafka_target import KafkaTarget
+from .targets.target import Target
 
 
 class PublisherFactory:

@@ -1,11 +1,10 @@
 from datetime import datetime, timedelta
 
-from mockseries.utils import datetime_range
-from mockseries.trend import LinearTrend
-from mockseries.seasonality import SinusoidalSeasonality
 from mockseries.noise import RedNoise
+from mockseries.seasonality import SinusoidalSeasonality
 from mockseries.signal.signal import Signal
-
+from mockseries.trend import LinearTrend
+from mockseries.utils import datetime_range
 from values import Value
 
 

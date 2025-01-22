@@ -1,10 +1,11 @@
-from .targets import KafkaTarget
-from . import Publisher
-from confluent_kafka import Producer
-from confluent_kafka.serialization import StringSerializer
-from confluent_kafka.error import KafkaException
-
 from uuid import uuid4
+
+from confluent_kafka import Producer
+from confluent_kafka.error import KafkaException
+from confluent_kafka.serialization import StringSerializer
+
+from . import Publisher
+from .targets.kafka_target import KafkaTarget
 
 
 class KafkaPublisher(Publisher):

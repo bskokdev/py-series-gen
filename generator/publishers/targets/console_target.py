@@ -1,4 +1,4 @@
-from . import Target
+from .target import Target
 
 
 class ConsoleTarget(Target):
