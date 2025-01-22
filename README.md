@@ -35,14 +35,6 @@ pip install -r requirements.txt
 
 If you more need help, you can use `--help` argument to view all supported arguments, and usages.
 
-## Scripts for you to use
-I have included some helpful scripts directly in the repository which you can run (check out `generator/scripts` directory).
-
-- `generate.sh` - Generates data with `batch_size=2048` to the `console` target
-- `typecheck.sh` - Uses MyPy to statically check types in the entire repository 
-- `unit-tests.sh` - Runs unit tests (marked with `@pytest.mark.unit_test` decorator)
-- `integration-tests.sh` - Runs integration tests (marked with `@pytest.mark.integration_test` decorator)
-
 ## Testing 
 
 For testing I've used pytest, since it has a good support for fixtures, allows custom marks, and is generally very simple to use, and provides more features than the unittest Python module. 
@@ -52,18 +44,12 @@ Currently there are defined 2 custom marks:
 * `integration_test` - this annonates the integrations tests
 
 
-#### How to run (specific) tests
+#### How to run tests
 NOTE: some tests are disabled locally, as they would take too long to pass, and that's quite annoying.
 
 ```bash
-# To run all tests 
-pytest
-
-# To run obly the unit tests
-pytest -v -m unit_test
-
-# To run obly the integration tests
-pytest -v -m integration_test
+# To run the tests ... make sure you are in the /generator directory, or you will get warnings
+python3 -m pytest
 ```
 
 
