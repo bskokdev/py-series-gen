@@ -1,7 +1,6 @@
 from argparse import ArgumentParser, Namespace
 
 import cli.parser as cli_parser
-from generators import time_series_generator
 from publishers.publisher_factory import PublisherFactory
 
 

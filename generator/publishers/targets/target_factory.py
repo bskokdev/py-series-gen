@@ -40,4 +40,6 @@ class TargetFactory:
                     server_port=args.port,
                 )
             case _:
-                raise TypeError("Target was not provided or no such target exists.")
+                raise TypeError(
+                    "Target type must be specified (--target TARGET). It's possible such target is not yet supported."
+                )

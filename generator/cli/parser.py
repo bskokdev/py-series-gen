@@ -61,9 +61,6 @@ def build_target_from_args(parser: ArgumentParser, args: Namespace) -> Target:
     Returns:
         Target: A target object which is a state supplied to a publisher
     """
-    if not args.target:
-        parser.error("Target type must be specified (--target TARGET)")
-
     target_type = target_arg_to_type[args.target]
     try:
         return TargetFactory().create_target(target_type=target_type, args=args)
