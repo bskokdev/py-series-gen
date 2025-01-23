@@ -1,11 +1,17 @@
 from argparse import ArgumentParser, Namespace
-from typing import Tuple
+from typing import Any, Tuple
 
 from publishers.targets.target import Target
 from publishers.targets.target_factory import TargetFactory
 
 from .argument_formatter import TargetHelpFormatter
-from .arguments import core_arguments, flags, specific_target_args, target_arg_to_type
+from .arguments import (
+    core_arguments,
+    flags,
+    generator_name_to_function,
+    specific_target_args,
+    target_arg_to_type,
+)
 
 
 def _attach_core_arguments_and_flags(parser: ArgumentParser):
@@ -65,6 +71,10 @@ def build_target_from_args(parser: ArgumentParser, args: Namespace) -> Target:
         parser.error(str(e))
 
 
+def get_generator_func_from_args(args: Namespace) -> Any:
+    return generator_name_to_function[args.generator]
+
+
 def verify_core_args(parser: ArgumentParser, args: Namespace):
     """Verifies core runtime arguments (target, and batch_size).
     If one of them doesn't match the expected value a ValueError is raised.
@@ -75,13 +85,15 @@ def verify_core_args(parser: ArgumentParser, args: Namespace):
     Raises:
         ValueError: Raised if target, or batch_size don't contain a valid value
     """
+    if not args.generator or args.generator not in generator_name_to_function:
+        parser.error(
+            "Generator function must be specified (--generator NAME). It's possible such generator is not yet supported."
+        )
+
     if not args.target or args.target not in target_arg_to_type:
         parser.error(
-            "Target type must be specified (--target TARGET). It's possible"
-            " that such target isn't supported yet :("
+            "Target type must be specified (--target TARGET). It's possible such target is not yet supported."
         )
+
     if not args.batch_size or args.batch_size < 0:
-        parser.error(
-            "Batch size value must be specified (--batch-size SIZE) where SIZE"
-            " is a POSITIVE INTEGER!"
-        )
+        parser.error("Batch size must be specified (--batch-size SIZE | SIZE > 0)")

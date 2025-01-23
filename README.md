@@ -27,6 +27,8 @@ pip install -r requirements.txt
 * `--target <TARGET_TYPE>` - Specifies the publish target (e.g., console, kafka)
 * `--batch-size <DATA_SIZE>` - Sets the size of data batches to generate
 * `--stream` - Enables streaming mode. For now this means, the batches are sent repeatedly to the target.
+* `--generator` - Specifies which generator function should be used to generate the data
+    * currently only `time-series` generator is supported
 
 #### Kafka Arguments
 * `--bootstrap-server <SERVER_ADDRESS>` - Tells the program where is the Kafka bootstrap-server running
@@ -55,14 +57,14 @@ python3 -m pytest
 
 ### Examples
 ```bash
-# Stream batches of data to the console, each batch contains 2048 values
-python3 py_series_gen.py --target console --batch-size 2048 --stream
+# Stream batches of time series data to the console, each batch contains 2048 values
+python3 py_series_gen.py --target console --generator time-series --batch-size 2048 --stream
 
-# Generate a single batch of 1000 values to the console
-python3 py_series_gen.py --target console --batch-size 1000
+# Generate a single batch of 1000 time series values to the console
+python3 py_series_gen.py --target console --generator time-series --batch-size 1000
 
-# Stream batches of size 32 to the `py-topic` Kafka topic which is present at localhost:9092
-python3 py_series_gen.py --target kafka --batch-size 32 --bootstrap-server localhost --port 9092 --topic py-topic --stream
+# Stream batches of 32 time series values to the `py-topic` Kafka topic which is present at localhost:9092
+python3 py_series_gen.py --target kafka --generator time-series --batch-size 32 --bootstrap-server localhost --port 9092 --topic py-topic --stream
 ```
 
 ### Architecture

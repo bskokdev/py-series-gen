@@ -5,7 +5,6 @@ from mockseries.seasonality import SinusoidalSeasonality
 from mockseries.signal.signal import Signal
 from mockseries.trend import LinearTrend
 from mockseries.utils import datetime_range
-
 from values import Value
 
 

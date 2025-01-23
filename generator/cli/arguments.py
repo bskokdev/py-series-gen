@@ -1,13 +1,18 @@
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import Dict, Generic, List, TypeVar
+from typing import Any, Dict, Generic, List, TypeVar
 
+from generators.time_series_gen import time_series_generator
 from publishers.targets.target import TargetType
 
 # Maps a target type argument string to an actual enum class, for better typing
-target_arg_to_type: Dict[str, TargetType] = defaultdict(
-    None, {"console": TargetType.console, "kafka": TargetType.kafka}
-)
+target_arg_to_type: Dict[str, TargetType] = {
+    "console": TargetType.console,
+    "kafka": TargetType.kafka,
+}
+
+# Maps the name of the generator to the actual function to be called to generate the data
+generator_name_to_function: Dict[str, Any] = {"time-series": time_series_generator}
 
 T = TypeVar("T")
 
@@ -47,6 +52,12 @@ core_arguments: List[Argument] = [
         dest="batch_size",
         type=int,
         help="Single batch (iteration) size",
+    ),
+    Argument(
+        arg="--generator",
+        dest="generator",
+        type=str,
+        help="Name of the generator functon to be used",
     ),
 ]
 

@@ -22,6 +22,12 @@ def all_args_parser_fixture() -> ArgumentParser:
         help="Size of a single batch of data",
     )
     test_parser.add_argument(
+        "--generator",
+        dest="generator",
+        type=str,
+        help="Name of the generator functon to be used",
+    )
+    test_parser.add_argument(
         "--stream",
         dest="is_stream",
         action="store_true",
@@ -59,6 +65,7 @@ def kafka_args_fixture() -> Namespace:
     return Namespace(
         target="kafka",
         batch_size=32,
+        generator="time-series",
         is_stream=False,
         debug=False,
         bootstrap_server="localtest",
@@ -70,11 +77,10 @@ def kafka_args_fixture() -> Namespace:
 @pytest.mark.unit_test
 def test_create_parser_with_all_args(all_args_parser_fixture: ArgumentParser):
     defined_args = all_args_parser_fixture.parse_args()
-    empty_args = Namespace()
 
     _, created_args = cli_parser.create_parser_with_all_args()
     assert defined_args.__eq__(created_args)
-    assert not defined_args.__eq__(empty_args)
+    assert not defined_args.__eq__(Namespace())
     for arg in vars(defined_args):
         assert created_args.__contains__(arg)
 
