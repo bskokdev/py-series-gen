@@ -37,6 +37,7 @@ class KafkaPublisher(Publisher):
             ConnectionError: Raised if the producer can't connect to the broker
         """
         try:
+            # This call is only used to validate the connection to the broker
             self._producer.list_topics(timeout=10)
         except KafkaException as e:
             raise ConnectionError(f"Failed to connect to Kafka broker: {str(e)}")
