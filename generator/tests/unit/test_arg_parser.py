@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, Namespace
 
-import cli.arguments as cli
+import cli.parser as cli_parser
 import pytest
 from publishers.targets.console_target import ConsoleTarget
 from publishers.targets.kafka_target import KafkaTarget
@@ -19,23 +19,38 @@ def all_args_parser_fixture() -> ArgumentParser:
         "--batch-size",
         dest="batch_size",
         type=int,
+        help="Size of a single batch of data",
     )
     test_parser.add_argument(
         "--stream",
         dest="is_stream",
         action="store_true",
         default=False,
+        help="Should data be streamed",
     )
     test_parser.add_argument(
         "--debug",
         dest="debug",
         action="store_true",
         default=False,
+        help="Should the program be run in the debug mode",
     )
     kafka_group = test_parser.add_argument_group("kafka arguments")
-    kafka_group.add_argument("--bootstrap-server", dest="bootstrap_server", type=str)
-    kafka_group.add_argument("--port", dest="port", type=int)
-    kafka_group.add_argument("--topic", dest="kafka_topic", type=str)
+    kafka_group.add_argument(
+        "--bootstrap-server",
+        dest="bootstrap_server",
+        type=str,
+        help="kafka bootstrap server address",
+    )
+    kafka_group.add_argument(
+        "--port", dest="port", type=int, help="Kafka bootstrap server port"
+    )
+    kafka_group.add_argument(
+        "--topic",
+        dest="kafka_topic",
+        type=str,
+        help="Kafka topic to publish the data to",
+    )
     return test_parser
 
 
@@ -57,7 +72,7 @@ def test_create_parser_with_all_args(all_args_parser_fixture: ArgumentParser):
     defined_args = all_args_parser_fixture.parse_args()
     empty_args = Namespace()
 
-    _, created_args = cli.create_parser_with_all_args()
+    _, created_args = cli_parser.create_parser_with_all_args()
     assert defined_args.__eq__(created_args)
     assert not defined_args.__eq__(empty_args)
     for arg in vars(defined_args):
@@ -74,7 +89,9 @@ def test_build_target_from_args(kafka_args_fixture: Namespace):
         batch_size=32,
         is_stream=False,
     )
-    created_target = cli.build_target_from_args(ArgumentParser(), kafka_args_fixture)
+    created_target = cli_parser.build_target_from_args(
+        ArgumentParser(), kafka_args_fixture
+    )
 
     assert created_target.__eq__(expected_target)
     assert not created_target.__eq__(console_target)

@@ -1,6 +1,6 @@
 from argparse import ArgumentParser, Namespace
 
-import cli.arguments as cli
+import cli.parser as cli_parser
 from generators import time_series_generator
 from publishers.publisher_factory import PublisherFactory
 
@@ -16,9 +16,9 @@ def run(arg_parser: ArgumentParser, args: Namespace):
     Raises:
         ValueError: Raised if any of the core arguments is not provided
     """
-    cli.verify_core_args(parser=arg_parser, args=args)
+    cli_parser.verify_core_args(parser=arg_parser, args=args)
 
-    publish_target = cli.build_target_from_args(parser=arg_parser, args=args)
+    publish_target = cli_parser.build_target_from_args(parser=arg_parser, args=args)
     publisher = PublisherFactory().create_publisher(
         generator_func=time_series_generator, target=publish_target
     )
@@ -26,7 +26,7 @@ def run(arg_parser: ArgumentParser, args: Namespace):
 
 
 if __name__ == "__main__":
-    arg_parser, arguments = cli.create_parser_with_all_args()
+    arg_parser, arguments = cli_parser.create_parser_with_all_args()
     if arguments.debug:
         # the debug run without try except block
         run(arg_parser=arg_parser, args=arguments)
