@@ -24,14 +24,14 @@ pip install -r requirements.txt
 ## Usage
 
 #### Default Arguments
-`--target <TARGET_TYPE>` - Specifies the publish target (e.g., console, kafka)
-`--batch-size <DATA_SIZE>` - Sets the size of data batches to generate
-`--stream` - Enables streaming mode. For now this means, the batches are sent repeatedly to the target.
+* `--target <TARGET_TYPE>` - Specifies the publish target (e.g., console, kafka)
+* `--batch-size <DATA_SIZE>` - Sets the size of data batches to generate
+* `--stream` - Enables streaming mode. For now this means, the batches are sent repeatedly to the target.
 
 #### Kafka Arguments
-`--bootstrap-server <SERVER_ADDRESS>` - Tells the program where is the Kafka bootstrap-server running
-`--port <PORT>` - On which port the bootstrap-server runs
-`--topic <KAFKA TOPIC>` - Specifies the topic the data should be generated to
+* `--bootstrap-server <SERVER_ADDRESS>` - Tells the program where is the Kafka bootstrap-server running
+* `--port <PORT>` - On which port the bootstrap-server runs
+* `--topic <KAFKA TOPIC>` - Specifies the topic the data should be generated to
 
 If you more need help, you can use `--help` argument to view all supported arguments, and usages.
 
