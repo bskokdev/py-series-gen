@@ -2,7 +2,7 @@ from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any, Dict, Generic, List, TypeVar
 
-from generators.time_series_gen import time_series_generator
+from generators import time_series_generator
 from publishers.targets import TargetType
 
 # Maps a target type argument string to an actual enum class, for better typing
