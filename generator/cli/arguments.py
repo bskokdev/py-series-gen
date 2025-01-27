@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, Generic, List, TypeVar
 
 from generators.time_series_gen import time_series_generator
-from publishers.targets.target import TargetType
+from publishers.targets import TargetType
 
 # Maps a target type argument string to an actual enum class, for better typing
 target_arg_to_type: Dict[str, TargetType] = {

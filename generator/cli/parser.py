@@ -1,8 +1,7 @@
 from argparse import ArgumentParser, Namespace
 from typing import Any, Tuple
 
-from publishers.targets.target import Target
-from publishers.targets.target_factory import TargetFactory
+from publishers.targets import Target, TargetFactory
 
 from .argument_formatter import TargetHelpFormatter
 from .arguments import (

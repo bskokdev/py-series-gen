@@ -3,9 +3,7 @@ from typing import Any
 from .console_publisher import ConsolePublisher
 from .kafka_publisher import KafkaPublisher
 from .publisher import Publisher
-from .targets.console_target import ConsoleTarget
-from .targets.kafka_target import KafkaTarget
-from .targets.target import Target
+from .targets import ConsoleTarget, KafkaTarget, Target
 
 
 class PublisherFactory:

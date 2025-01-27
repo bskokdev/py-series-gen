@@ -5,7 +5,7 @@ from confluent_kafka.error import KafkaException
 from confluent_kafka.serialization import StringSerializer
 
 from .publisher import Publisher
-from .targets.kafka_target import KafkaTarget
+from .targets import KafkaTarget
 
 
 class KafkaPublisher(Publisher):

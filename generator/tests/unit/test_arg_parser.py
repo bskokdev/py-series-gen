@@ -1,9 +1,9 @@
 from argparse import ArgumentParser, Namespace
 
-import cli.parser as cli_parser
 import pytest
-from publishers.targets.console_target import ConsoleTarget
-from publishers.targets.kafka_target import KafkaTarget
+
+import cli.parser as cli_parser
+from publishers.targets import ConsoleTarget, KafkaTarget
 
 
 @pytest.fixture
