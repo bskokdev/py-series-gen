@@ -1,11 +1,12 @@
 from typing import Any, Generator, List
 
-import cli.parser as cli_parser
 import pytest
 from confluent_kafka import Consumer
 from confluent_kafka.admin import AdminClient, NewTopic
-from publishers.publisher_factory import PublisherFactory
 from testcontainers.kafka import KafkaContainer
+
+import cli.parser as cli_parser
+from publishers import PublisherFactory
 from values import Value
 
 
