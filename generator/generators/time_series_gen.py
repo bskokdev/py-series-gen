@@ -1,12 +1,12 @@
 import random
 from datetime import datetime, timedelta
+from typing import Generator
 
 from mockseries.noise import RedNoise
 from mockseries.seasonality import SinusoidalSeasonality
 from mockseries.signal.signal import Signal
 from mockseries.trend import LinearTrend
 from mockseries.utils import datetime_range
-
 from values import Value
 
 
@@ -49,7 +49,7 @@ def _define_time_series() -> Signal:
     return timeseries
 
 
-def time_series_generator(batch_size: int):
+def time_series_generator(batch_size: int) -> Generator[Value, None, None]:
     """Generates time series values of size `batch_size` and yields them to the generator customer.
     we split the batch-size into chunks, this allows computer to store less data in the memory buffer
     Let's say we have 120 000 000 000 data points to generate, we don't want to store this into memory at once,

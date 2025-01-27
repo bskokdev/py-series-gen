@@ -1,8 +1,10 @@
+from typing import Generator
 from uuid import uuid4
 
 from confluent_kafka import Producer
 from confluent_kafka.error import KafkaException
 from confluent_kafka.serialization import StringSerializer
+from values import Value
 
 from .publisher import Publisher
 from .targets import KafkaTarget
@@ -17,7 +19,9 @@ class KafkaPublisher(Publisher):
         Publisher: Base publisher implementation with validation, and stream handling
     """
 
-    def __init__(self, generator_fun, target: KafkaTarget):
+    def __init__(
+        self, generator_fun: Generator[Value, None, None], target: KafkaTarget
+    ):
         super().__init__(generator_fun, target)
         self._producer_config = {
             "bootstrap.servers": target.full_server_address,

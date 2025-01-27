@@ -19,8 +19,7 @@ class ConsolePublisher(Publisher):
         """
         if not isinstance(self._target, ConsoleTarget):
             raise TypeError(
-                "Wrong target type provided to the console publisher, expecting"
-                " ConsoleTarget"
+                "Wrong target provided to the console publisher, expecting ConsoleTarget"
             )
         for value in self._generator(self._target.batch_size):
             print(value.data)
