@@ -1,3 +1,4 @@
+import random
 from datetime import datetime, timedelta
 
 from mockseries.noise import RedNoise
@@ -5,6 +6,7 @@ from mockseries.seasonality import SinusoidalSeasonality
 from mockseries.signal.signal import Signal
 from mockseries.trend import LinearTrend
 from mockseries.utils import datetime_range
+
 from values import Value
 
 
@@ -14,16 +16,35 @@ def _define_time_series() -> Signal:
     Returns:
         Signal: Interface representing any type of signal.
     """
-    # TODO: I believe it'd be much better if the below values were random
+    # trend parameters
+    trend_coefficient = random.uniform(1, 5)  # slope
+    trend_time_unit = timedelta(days=random.randint(2, 7))
+    flat_base = random.uniform(50, 150)  # f(x) base value
+
+    # seasonality parameters
+    amplitude1 = random.uniform(10, 30)
+    period1 = timedelta(days=random.randint(5, 10))
+    amplitude2 = random.uniform(2, 90)
+    period2 = timedelta(days=1)
+
+    # noise parameters
+    noise_mean = 0
+    noise_std = random.uniform(1, 5)  # standard deviation
+    noise_correlation = random.uniform(0.1, 0.9)
+
     trend = LinearTrend(
-        coefficient=2, time_unit=timedelta(days=4), flat_base=100
+        coefficient=trend_coefficient, time_unit=trend_time_unit, flat_base=flat_base
     )  # long term change
+
     seasonality = SinusoidalSeasonality(
-        amplitude=20, period=timedelta(days=7)
+        amplitude=amplitude1, period=period1
     ) + SinusoidalSeasonality(
-        amplitude=4, period=timedelta(days=1)
+        amplitude=amplitude2, period=period2
     )  # repeating pattern
-    noise = RedNoise(mean=0, std=3, correlation=0.5)  # random changes
+
+    noise = RedNoise(
+        mean=noise_mean, std=noise_std, correlation=noise_correlation
+    )  # noise
     timeseries = trend + seasonality + noise
     return timeseries
 
