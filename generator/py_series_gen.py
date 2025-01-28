@@ -17,7 +17,7 @@ def run(arg_parser: ArgumentParser, args: Namespace):
     """
     cli_parser.verify_core_args(parser=arg_parser, args=args)
 
-    publish_target = cli_parser.build_target_from_args(parser=arg_parser, args=args)
+    publish_target = cli_parser.build_target_from_args(args=args, parser=arg_parser)
     generator_function = cli_parser.get_generator_func_from_args(args=args)
     publisher = PublisherFactory().create_publisher(
         generator_func=generator_function, target=publish_target

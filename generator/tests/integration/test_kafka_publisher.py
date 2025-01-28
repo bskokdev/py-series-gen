@@ -5,9 +5,7 @@ from confluent_kafka import Consumer
 from confluent_kafka.admin import AdminClient, NewTopic
 from testcontainers.kafka import KafkaContainer
 
-import cli.parser as cli_parser
-from publishers import PublisherFactory
-from values import Value
+from .integration import run_integration
 
 
 @pytest.fixture
@@ -27,17 +25,6 @@ def _add_kafka_topic(admin: AdminClient, topic_name: str):
     """
     test_topic = NewTopic(topic_name, num_partitions=1, replication_factor=1)
     admin.create_topics([test_topic])
-
-
-def _run_integration():
-    """This generilizes a single test run of the program"""
-    arg_parser, test_args = cli_parser.create_parser_with_all_args()
-    test_target = cli_parser.build_target_from_args(parser=arg_parser, args=test_args)
-    publisher = PublisherFactory().create_publisher(
-        generator_func=lambda batch_s: [Value(data=i) for i in range(batch_s)],
-        target=test_target,
-    )
-    publisher.publish_to_target()
 
 
 def _listen_on_topics(consumer: Consumer, topic_names: List[str]) -> List[Any]:
@@ -95,28 +82,9 @@ def test_kafka_publisher(monkeypatch, kafka_container):
         "test-topic",
     ]
     monkeypatch.setattr("sys.argv", args)
-    _run_integration()
+    run_integration()
 
     received = _listen_on_topics(consumer=consumer, topic_names=[test_topic_name])
     consumer.close()
 
     assert len(received) == batch_size
-
-
-@pytest.mark.integration_test
-def test_console_publisher(capsys, monkeypatch):
-    batch_size = 2048
-    args = ["test.py", "--target", "console", "--batch-size", str(batch_size)]
-
-    # this modifies the runtime arguments programatically
-    monkeypatch.setattr("sys.argv", args)
-    _run_integration()
-
-    # capsys spies on the std, and reads the output (.out)
-    output = capsys.readouterr().out
-
-    assert output is not None
-
-    assert "0" in output
-    assert str(batch_size - 1) in output
-    assert len(output.splitlines()) == batch_size

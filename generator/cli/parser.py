@@ -48,7 +48,9 @@ def create_parser_with_all_args() -> Tuple[ArgumentParser, Namespace]:
     return parser, parser.parse_args()
 
 
-def build_target_from_args(parser: ArgumentParser, args: Namespace) -> Target:
+def build_target_from_args(
+    args: Namespace, parser: ArgumentParser = ArgumentParser()
+) -> Target:
     """Build a target object (state supplied to a publisher) from the CLI arguments.
     We cast the --target argument to an argument type via mapping:
         * target str -> target type

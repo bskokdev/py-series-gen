@@ -32,12 +32,11 @@ class KafkaTarget(Target):
         super()._validate_arguments()
         if not self._server_address:
             raise ValueError(
-                "Kafka bootstrap server has to be specified (--bootstrap-server"
-                " ADDRESS)"
+                "Bootstrap server has to be specified (--bootstrap-server ADDRESS)"
             )
         elif not self._server_port:
             raise ValueError(
-                "Kafka bootstrap server's port has to be specified (--port" " PORT)"
+                "Bootstrap server's port has to be specified (--port PORT)"
             )
         elif not self.kafka_topic:
             raise ValueError("Kafka topic has to be specified (--topic TOPIC_NAME)")
