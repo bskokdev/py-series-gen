@@ -1,9 +1,10 @@
 from typing import Any
 
 from .console_publisher import ConsolePublisher
+from .file_publisher import FilePublisher
 from .kafka_publisher import KafkaPublisher
 from .publisher import Publisher
-from .targets import ConsoleTarget, KafkaTarget, Target
+from .targets import ConsoleTarget, FileTarget, KafkaTarget, Target
 
 
 class PublisherFactory:
@@ -31,5 +32,7 @@ class PublisherFactory:
                 return ConsolePublisher(generator_fun=generator_func, target=target)
             case KafkaTarget():
                 return KafkaPublisher(generator_fun=generator_func, target=target)
+            case FileTarget():
+                return FilePublisher(generator_fun=generator_func, target=target)
             case _:
                 raise TypeError("Target was not provided or no such target exists.")

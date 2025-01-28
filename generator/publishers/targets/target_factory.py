@@ -1,5 +1,7 @@
 from argparse import Namespace
 
+from publishers.targets.file_target import FileTarget
+
 from .console_target import ConsoleTarget
 from .kafka_target import KafkaTarget
 from .target import Target, TargetType
@@ -38,6 +40,12 @@ class TargetFactory:
                     batch_size=args.batch_size,
                     is_stream=args.is_stream,
                     server_port=args.port,
+                )
+            case TargetType.FILE:
+                return FileTarget(
+                    file_path=args.file_path,
+                    batch_size=args.batch_size,
+                    is_stream=args.is_stream,
                 )
             case _:
                 raise TypeError(f"Unsupported target type: {target_type}")

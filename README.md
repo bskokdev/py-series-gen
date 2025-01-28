@@ -35,6 +35,13 @@ pip install -r requirements.txt
 * `--port <PORT>` - On which port the bootstrap-server runs
 * `--topic <KAFKA TOPIC>` - Specifies the topic the data should be generated to
 
+#### File Arguments
+* `--path FILE_PATH` - Specifies to which file the progam should write the data
+    **NOTES**:
+    * Currently supported file extensions are: `.csv`
+    * The FILE_PATH cannot point to a directory
+    * If the file doesn't exist yet at the destination, the progam automatically creates it
+
 If you more need help, you can use `--help` argument to view all supported arguments, and usages.
 
 ## Testing 
@@ -47,7 +54,7 @@ Currently there are defined 2 custom marks:
 
 
 #### How to run tests
-NOTE: some tests are disabled locally, as they would take too long to pass, and that's quite annoying.
+**NOTE**: some tests are disabled locally, as they would take too long to pass, and that's quite annoying.
 
 ```bash
 # To run the tests ... make sure you are in the /generator directory, or you will get warnings
