@@ -2,7 +2,8 @@ import pytest
 from publishers.targets import FileTarget, FileType
 
 
-def test_invalid_file_path():
+@pytest.mark.unit_test
+def test_empty_file_path():
     with pytest.raises(ValueError) as exc_info:
         FileTarget(file_path="", batch_size=120, is_stream=False)
 
@@ -11,6 +12,18 @@ def test_invalid_file_path():
     )
 
 
+@pytest.mark.unit_test
+def test_directory_file_path(tmpdir):
+    with pytest.raises(ValueError) as exc_info:
+        FileTarget(file_path=tmpdir, batch_size=420, is_stream=False)
+
+    assert (
+        "Directory path is not supported, provide path to a file (~/dir/file.csv)"
+        in str(exc_info)
+    )
+
+
+@pytest.mark.unit_test
 def test_determine_file_type():
     csv_file_target = FileTarget(
         file_path="/directory/file.csv", batch_size=120, is_stream=False
