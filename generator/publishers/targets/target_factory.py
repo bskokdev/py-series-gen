@@ -16,22 +16,22 @@ class TargetFactory:
 
         Args:
             target_type (TargetType): Required type of the new Target
-            args (Namespace): Argument namescape which can be used to fill target object
+            args (Namespace): Argument namespace used to fill target object
 
         Raises:
-            ValueError: Raised from the target implementations if the arguments are invalid
-            TypeError: Raised if the target_type does not match any existing type
+            ValueError: Raised from the target if the arguments are invalid
+            TypeError: Raised if the type does not match any existing target
 
         Returns:
             Target: Newly constructed target object of specific type
         """
         match target_type:
-            case TargetType.console:
+            case TargetType.CONSOLE:
                 return ConsoleTarget(
                     batch_size=args.batch_size,
                     is_stream=args.is_stream,
                 )
-            case TargetType.kafka:
+            case TargetType.KAFKA:
                 return KafkaTarget(
                     bootstrap_server=args.bootstrap_server,
                     kafka_topic=args.kafka_topic,
@@ -40,6 +40,4 @@ class TargetFactory:
                     server_port=args.port,
                 )
             case _:
-                raise TypeError(
-                    "Target type must be specified (--target TARGET). It's possible such target is not yet supported."
-                )
+                raise TypeError(f"Unsupported target type: {target_type}")

@@ -3,8 +3,9 @@ from enum import Enum
 
 
 class TargetType(Enum):
-    console = 1
-    kafka = 2
+    CONSOLE = 1
+    KAFKA = 2
+    FILE = 3
 
 
 class Target(ABC):

@@ -7,8 +7,8 @@ from publishers.targets import TargetType
 
 # Maps a target type argument string to an actual enum class, for better typing
 target_arg_to_type: Dict[str, TargetType] = {
-    "console": TargetType.console,
-    "kafka": TargetType.kafka,
+    "console": TargetType.CONSOLE,
+    "kafka": TargetType.KAFKA,
 }
 
 # Maps the name of the generator to the actual function to be called to generate the data
@@ -83,7 +83,7 @@ flags: List[Flag] = [
 specific_target_args: Dict[TargetType, List[Argument]] = defaultdict(
     list,
     {
-        TargetType.kafka: [
+        TargetType.KAFKA: [
             Argument(
                 arg="--bootstrap-server",
                 dest="bootstrap_server",
