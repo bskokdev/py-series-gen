@@ -15,8 +15,9 @@ def test_console_publisher(capsys, monkeypatch):
     # capsys spies on the std, and reads the output (.out)
     output = capsys.readouterr().out
 
-    assert output is not None
+    assert output
 
-    assert "0" in output
-    assert str(batch_size - 1) in output
-    assert len(output.splitlines()) == batch_size
+    lines = output.splitlines()
+    assert len(lines) == batch_size
+    for i, row in enumerate(lines):
+        assert row == f"[{i}, {i+1}, {i+2}]"

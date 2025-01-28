@@ -1,7 +1,7 @@
 from typing import Any, Generator, List
 
 import pytest
-from confluent_kafka import Consumer
+from confluent_kafka import Consumer, Message
 from confluent_kafka.admin import AdminClient, NewTopic
 from testcontainers.kafka import KafkaContainer
 
@@ -42,11 +42,14 @@ def _listen_on_topics(consumer: Consumer, topic_names: List[str]) -> List[Any]:
     consumer.subscribe(topic_names)
     received: List[Any] = []
     while True:
-        message = consumer.poll(timeout=5.0)
+        message: Message = consumer.poll(timeout=5.0)
         if not message:
             consumer.unsubscribe()
             return received
-        received.append(message)
+        val = message.value()
+        if val:
+            # kafka topics stores bytes, so we need to decode them
+            received.append(val.decode("utf-8"))
 
 
 @pytest.mark.integration_test
@@ -88,3 +91,5 @@ def test_kafka_publisher(monkeypatch, kafka_container):
     consumer.close()
 
     assert len(received) == batch_size
+    for i, value in enumerate(received):
+        assert value == f"[{i}, {i+1}, {i+2}]"

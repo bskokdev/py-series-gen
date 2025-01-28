@@ -4,11 +4,16 @@ from values import Value
 
 
 def run_integration():
-    """This generilizes a single test run of the program"""
+    """This generilizes a single test run of the program
+    We don't specify the generator function in the test arguments
+    as we're using custom generator for testing.
+    """
     arg_parser, test_args = cli_parser.create_parser_with_all_args()
     test_target = cli_parser.build_target_from_args(args=test_args, parser=arg_parser)
     publisher = PublisherFactory().create_publisher(
-        generator_func=lambda batch_s: [Value(data=i) for i in range(batch_s)],
+        generator_func=lambda batch_s: [
+            Value(data=[i, i + 1, i + 2]) for i in range(batch_s)
+        ],
         target=test_target,
     )
     publisher.publish_to_target()
