@@ -7,6 +7,4 @@ class ConsoleTarget(Target):
     """
 
     def _validate_arguments(self):
-        # Arguments are the same as for the generic target, no need for validation here
-        # We also have to implement this method otherwise we couldn't instantiate this class
-        pass
+        return super()._validate_arguments()
