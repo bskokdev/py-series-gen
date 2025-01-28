@@ -9,6 +9,7 @@ from publishers.targets import TargetType
 target_arg_to_type: Dict[str, TargetType] = {
     "console": TargetType.CONSOLE,
     "kafka": TargetType.KAFKA,
+    "file": TargetType.FILE,
 }
 
 # Maps the name of the generator to the actual function to be called to generate the data
@@ -102,6 +103,14 @@ specific_target_args: Dict[TargetType, List[Argument]] = defaultdict(
                 type=str,
                 help="Kafka topic to send the data to",
             ),
-        ]
+        ],
+        TargetType.FILE: [
+            Argument(
+                arg="--path",
+                dest="file_path",
+                type=str,
+                help="Path of the file where the data should be published",
+            ),
+        ],
     },
 )
