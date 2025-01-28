@@ -21,7 +21,10 @@ class Target(ABC):
     @abstractmethod
     def _validate_arguments(self):
         """Abstract function overriden by concrete implementations to validate their args"""
-        pass
+        if not self.batch_size or self.batch_size < 0:
+            raise ValueError(
+                "Batch size must be specified (--batch-size SIZE | SIZE > 0)"
+            )
 
     def __repr__(self):
         return repr(f"<batch-size={self.batch_size}, is_stream={self.is_stream}>")

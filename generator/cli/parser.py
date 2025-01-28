@@ -72,7 +72,7 @@ def get_generator_func_from_args(args: Namespace) -> Any:
 
 
 def verify_core_args(parser: ArgumentParser, args: Namespace):
-    """Verifies core runtime arguments (target, and batch_size).
+    """Verifies core runtime arguments (target, and generator).
     If one of them doesn't match the expected value a ValueError is raised.
 
     Args:
@@ -90,6 +90,3 @@ def verify_core_args(parser: ArgumentParser, args: Namespace):
         parser.error(
             "Target type must be specified (--target TARGET). It's possible such target is not yet supported."
         )
-
-    if not args.batch_size or args.batch_size < 0:
-        parser.error("Batch size must be specified (--batch-size SIZE | SIZE > 0)")

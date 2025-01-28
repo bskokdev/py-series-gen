@@ -7,4 +7,4 @@ class ConsoleTarget(Target):
     """
 
     def _validate_arguments(self):
-        return super()._validate_arguments()
+        super()._validate_arguments()

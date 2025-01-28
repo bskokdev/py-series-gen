@@ -29,6 +29,7 @@ class KafkaTarget(Target):
         Raises:
             ValueError: Raised if either kafka server, or topic are not provided.
         """
+        super()._validate_arguments()
         if not self._server_address:
             raise ValueError(
                 "Kafka bootstrap server has to be specified (--bootstrap-server"
