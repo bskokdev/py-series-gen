@@ -3,7 +3,7 @@ A flexible Python-based data generation tool that creates and publishes data str
 
 ## Features
 - 🔄 Streaming data generation using Python generator functions (only time series generator available for now)
-- 🎯 Multiple publish targets support (currently Console, and Kafka)
+- 🎯 Multiple publish targets support (Console, Kafka, CSV)
 - ⚡ Efficient batch processing
 - 🛠️ Configurable through CLI arguments
 - 🔌 Extensible architecture for adding new publish targets
@@ -24,11 +24,11 @@ pip install -r requirements.txt
 ## Usage
 
 #### Default Arguments
-* `--target <TARGET_TYPE>` - Specifies the publish target (e.g., console, kafka)
+* `--target <(console, kafka, file)>` - Specifies the publish target
 * `--batch-size <DATA_SIZE>` - Sets the size of data batches to generate
-* `--stream` - Enables streaming mode. For now this means, the batches are sent repeatedly to the target.
 * `--generator` - Specifies which generator function should be used to generate the data
     * currently only `time-series` generator is supported
+* `--stream` - Enables streaming mode. For now this means, the batches are sent repeatedly to the given target.
 
 #### Kafka Arguments
 * `--bootstrap-server <SERVER_ADDRESS>` - Tells the program where is the Kafka bootstrap-server running
@@ -77,7 +77,7 @@ python3 py_series_gen.py --target kafka --generator time-series --batch-size 32 
 ### Architecture
 The generator is built with a modular architecture (see docs for more). The 3 main concepts are Publishers, Targets, and generator functions. Both Publishers, and Targers are generated dynamically from the CLI arguments by their respective factories. The generator functions are implemented for each supported publish target.
 
-- Publish Targets: Handle the state for different destinations
+- Publish Targets: Handle the state for different data destinations
 - Publishers: These are responsible for the actual data sending to the data destinations
 - Generator Functions: Produce the actual data (e.g., time_series_generator)
 
