@@ -20,7 +20,7 @@ class FileTarget(Target):
 
     def __init__(
         self,
-        file_path: str,
+        file_path: str = "",
         batch_size: int = 0,
         is_stream: bool = False,
     ):

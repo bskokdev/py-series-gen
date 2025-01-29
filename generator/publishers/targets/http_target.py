@@ -4,7 +4,7 @@ from .target import Target
 
 
 class HttpTarget(Target):
-    def __init__(self, endpoint_url: str, batch_size=0, is_stream=False):
+    def __init__(self, endpoint_url: str = "", batch_size=0, is_stream=False):
         self.endpoint_url = endpoint_url
         super().__init__(batch_size, is_stream)
 

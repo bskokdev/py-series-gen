@@ -11,9 +11,9 @@ class KafkaTarget(Target):
 
     def __init__(
         self,
-        kafka_topic: str,
-        bootstrap_server: str,
-        server_port: int,
+        kafka_topic: str = "",
+        bootstrap_server: str = "",
+        server_port: int = "",
         batch_size: int = 0,
         is_stream: bool = False,
     ):

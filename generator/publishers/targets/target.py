@@ -22,9 +22,9 @@ class Target(ABC):
     @abstractmethod
     def _validate_arguments(self):
         """Abstract function overriden by concrete implementations to validate their args"""
-        if not self.batch_size or self.batch_size < 0:
+        if self.batch_size < 0:
             raise ValueError(
-                "Batch size must be specified (--batch-size SIZE | SIZE > 0)"
+                "Batch size must be specified and positive (--batch-size SIZE | SIZE > 0)"
             )
 
     def __repr__(self):

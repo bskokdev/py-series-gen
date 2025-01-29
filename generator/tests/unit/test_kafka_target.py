@@ -65,3 +65,17 @@ def test_missing_server_port():
             is_stream=False,
         )
     assert "Bootstrap server's port has to be specified" in str(exc_info.value)
+
+
+@pytest.mark.unit_test
+def test_valid_kafka_args():
+    try:
+        KafkaTarget(
+            kafka_topic="valid-topic",
+            bootstrap_server="localtest",
+            server_port=9092,
+            batch_size=32,
+            is_stream=False,
+        )
+    except:
+        pytest.fail("Valid kafka arguments shouldn't raise ValueError")

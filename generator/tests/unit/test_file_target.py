@@ -37,3 +37,12 @@ def test_determine_file_type():
     assert "Not supported extension, or invalid file path was provided" in str(
         exc_info.value
     )
+
+
+@pytest.mark.unit_test
+def test_valid_file_path(tmp_path):
+    try:
+        file_path = tmp_path.absolute().as_posix() + "test_data.csv"
+        FileTarget(file_path=file_path, batch_size=10, is_stream=False)
+    except ValueError:
+        pytest.fail("Valid batch size should not raise a ValueError")
