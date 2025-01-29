@@ -1,3 +1,4 @@
+import logging
 from argparse import Namespace
 
 from publishers.targets.file_target import FileTarget
@@ -6,6 +7,8 @@ from .console_target import ConsoleTarget
 from .http_target import HttpTarget
 from .kafka_target import KafkaTarget
 from .target import Target, TargetType
+
+logger = logging.getLogger(__name__)
 
 
 class TargetFactory:
@@ -44,6 +47,7 @@ class TargetFactory:
             case TargetType.HTTP:
                 return HttpTarget(**common_args, endpoint_url=args.endpoint_url)
             case _:
+                logger.error("Failed to match target type, check implementation")
                 raise TypeError(
                     f"Target type '{target_type}' is not supported or no such target exists."
                 )

@@ -1,3 +1,4 @@
+import logging
 from typing import Any, Callable, Generator, Type
 
 from .console_publisher import ConsolePublisher
@@ -6,6 +7,8 @@ from .http_publisher import HttpPublisher
 from .kafka_publisher import KafkaPublisher
 from .publisher import Publisher
 from .targets import ConsoleTarget, FileTarget, HttpTarget, KafkaTarget, Target
+
+logger = logging.getLogger(__name__)
 
 
 class PublisherFactory:
@@ -34,6 +37,9 @@ class PublisherFactory:
             case HttpTarget():
                 return HttpPublisher
             case _:
+                logger.error(
+                    "Failed to build a concrete publisher, ensure it's implemented"
+                )
                 raise TypeError(
                     f"Target type '{type(target).__name__}' is not supported"
                 )

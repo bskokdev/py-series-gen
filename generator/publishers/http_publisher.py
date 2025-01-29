@@ -1,3 +1,4 @@
+import logging
 from time import sleep
 from typing import Generator
 
@@ -8,6 +9,8 @@ from values import Value
 
 from .publisher import Publisher
 from .targets import HttpTarget
+
+logger = logging.getLogger(__name__)
 
 
 class HttpPublisher(Publisher):
@@ -73,6 +76,7 @@ class HttpPublisher(Publisher):
                     res.raise_for_status()
             except HTTPError as e:
                 if attempt == self._num_retries - 1:
+                    logger.warning("Reached max number of retries with an error status")
                     raise ConnectionError(
                         f"Failed to publish data via HTTP to {self._target.endpoint_url}: {e}"
                     )
@@ -88,7 +92,6 @@ class HttpPublisher(Publisher):
 
         for generated_value in self._generator(self._target.batch_size):
             response = self._send_value_to_endpoint(value=generated_value)
-            print(
+            logger.info(
                 f"Sent data to {self._target.endpoint_url} with response code: {response.status_code}"
             )
-            # TODO: add logger here

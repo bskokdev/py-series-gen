@@ -1,5 +1,8 @@
+import logging
 from abc import ABC, abstractmethod
 from enum import Enum
+
+logger = logging.getLogger(__name__)
 
 
 class TargetType(Enum):
@@ -23,6 +26,7 @@ class Target(ABC):
     def _validate_arguments(self):
         """Abstract function overriden by concrete implementations to validate their args"""
         if self.batch_size < 0:
+            logger.error("Batch size was a negative number, punish the user")
             raise ValueError(
                 "Batch size must be specified and positive (--batch-size SIZE | SIZE > 0)"
             )

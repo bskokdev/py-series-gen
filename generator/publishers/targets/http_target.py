@@ -1,6 +1,9 @@
+import logging
 from urllib.parse import urlparse
 
 from .target import Target
+
+logger = logging.getLogger(__name__)
 
 
 class HttpTarget(Target):
@@ -18,11 +21,13 @@ class HttpTarget(Target):
     def _validate_arguments(self):
         super()._validate_arguments()
         if not self.endpoint_url:
+            logger.error("Endpoint URL was empty")
             raise ValueError(
                 "HTTP endpoint URL has to be specified (--endpoint HTTP_ENDPOINT_URL)"
             )
 
         if not self._is_url_valid():
+            logger.error(f"Endpoint path: f{self.endpoint_url} is not a valid URL")
             raise ValueError(
                 "HTTP endpoint URL has to be a valid URL (https://example.com)"
             )

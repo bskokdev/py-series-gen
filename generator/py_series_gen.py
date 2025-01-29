@@ -1,6 +1,7 @@
 from argparse import ArgumentParser, Namespace
 
 import cli.parser as cli
+import logger.logger as log
 from publishers import PublisherFactory
 
 
@@ -29,9 +30,11 @@ if __name__ == "__main__":
     arg_parser, arguments = cli.create_parser_with_all_args()
     if arguments.debug:
         # the debug run without try except block
+        log.setup_logging(is_debug=True)
         run(arg_parser=arg_parser, args=arguments)
     else:
         try:
+            log.setup_logging()
             run(arg_parser=arg_parser, args=arguments)
         except Exception as e:
             print(str(e))
