@@ -48,7 +48,7 @@ def _listen_on_topics(consumer: Consumer, topic_names: List[str]) -> List[Any]:
             return received
         val = message.value()
         if val:
-            # kafka topics stores bytes, so we need to decode them
+            # kafka topics store bytes, so we need to decode them
             received.append(val.decode("utf-8"))
 
 
