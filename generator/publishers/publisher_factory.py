@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Callable, Generator, Type
 
 from .console_publisher import ConsolePublisher
 from .file_publisher import FilePublisher
@@ -11,28 +11,44 @@ class PublisherFactory:
     """Factory class which constructs new publishers."""
 
     @staticmethod
-    def create_publisher(generator_func: Any, target: Target) -> Publisher:
-        """The main factory method which takes in publish cli args,
-        and a generator function and creates a new publisher based on these arguments.
+    def _match_target_type(target: Target) -> Type[Publisher]:
+        """Returns a publisher based on the target type
 
         Args:
-            target (Target): publish target to send the data to. This contains all the metadata to do that.
-            generator_func (any): generator function which creates the data
+            target (Target): Concrete target implementation
 
         Raises:
-            ValueError: Raised if arguments don't match the pattern matched publisher
-            TypeError: Raised if target type doesn't match any of existing types
+            TypeError: Raised if target cannot be matched with a publisher
 
         Returns:
-            Publisher: concrete publisher implementation
+            Type[Publisher]: Concrete publisher for the specific target type
         """
-
         match target:
             case ConsoleTarget():
-                return ConsolePublisher(generator_fun=generator_func, target=target)
+                return ConsolePublisher
             case KafkaTarget():
-                return KafkaPublisher(generator_fun=generator_func, target=target)
+                return KafkaPublisher
             case FileTarget():
-                return FilePublisher(generator_fun=generator_func, target=target)
+                return FilePublisher
             case _:
-                raise TypeError("Target was not provided or no such target exists.")
+                raise TypeError(
+                    f"Target type '{type(target).__name__}' is not supported or no such target exists."
+                )
+
+    @staticmethod
+    def create_publisher(
+        generator_func: Callable[[], Generator[Any, None, None]], target: Target
+    ) -> Publisher:
+        """Factory method which constructs publisher with the given generator function
+        based on the target type of the provided target object. This method wraps the match,
+        so we don't pass generator, and target over, and over again.
+
+        Args:
+            generator_func (Callable[[], Generator[Any, None, None]]): The generator function.
+            target (Target): Object containing target metadata.
+
+        Returns:
+            Publisher: Concrete publisher for the specific target type
+        """
+        publisher_class = PublisherFactory._match_target_type(target)
+        return publisher_class(generator_fun=generator_func, target=target)

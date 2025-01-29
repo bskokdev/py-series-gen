@@ -48,4 +48,6 @@ class TargetFactory:
                     is_stream=args.is_stream,
                 )
             case _:
-                raise TypeError(f"Unsupported target type: {target_type}")
+                raise TypeError(
+                    f"Target type '{target_type}' is not supported or no such target exists."
+                )
