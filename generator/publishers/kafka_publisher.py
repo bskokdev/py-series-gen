@@ -59,7 +59,7 @@ class KafkaPublisher(Publisher):
         else:
             print(f"Message delivered to {msg.topic()} [{msg.partition()}]")
 
-    def publish_batch(self):
+    def _publish_batch(self):
         """Publishes a single batch of data to a kafka topic defined in the self._target
 
         Raises:

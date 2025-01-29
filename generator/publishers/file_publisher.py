@@ -30,7 +30,7 @@ class FilePublisher(Publisher):
                 print(f"{value.data} written to the CSV file")
                 writer.writerow(value.data)
 
-    def publish_batch(self):
+    def _publish_batch(self):
         """Overrides the abstract method which specifies the publish of a single batch.
         Each file type has different write method defined in this publisher.
 

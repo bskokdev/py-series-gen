@@ -10,7 +10,7 @@ class ConsolePublisher(Publisher):
             abstract publisher implementation. Mainly handles the instance values, and publish stream.
     """
 
-    def publish_batch(self):
+    def _publish_batch(self):
         """Publishes a single batch of data to the console target.
         Target contains only default parameters (batch-size, stream, etc.)
 
