@@ -22,7 +22,7 @@ class HttpPublisher(Publisher):
 
     def __init__(self, generator_fun: Generator[Value, None, None], target: HttpTarget):
         super().__init__(generator_fun, target)
-        self._num_retries = 5
+        self._max_retries = 5
         self._backoff_factor = 1
         self._status_forcelist = [429, 500, 502, 503, 504]
 
@@ -64,7 +64,7 @@ class HttpPublisher(Publisher):
         if not value:
             return
 
-        for attempt in range(self._num_retries):
+        for attempt in range(self._max_retries):
             try:
                 res = requests.post(self._target.endpoint_url, json=value.data)
                 if res.status_code == 200:
@@ -75,7 +75,7 @@ class HttpPublisher(Publisher):
                     sleep(self._compute_backoff_delay(response=res, attempt=attempt))
                     res.raise_for_status()
             except HTTPError as e:
-                if attempt == self._num_retries - 1:
+                if attempt == self._max_retries - 1:
                     logger.warning("Reached max number of retries with an error status")
                     raise ConnectionError(
                         f"Failed to publish data via HTTP to {self._target.endpoint_url}: {e}"
