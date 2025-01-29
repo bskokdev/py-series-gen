@@ -61,4 +61,11 @@ def all_args_parser_fixture() -> ArgumentParser:
         type=str,
         help="Path of the file where the data should be published",
     )
+    http_group = test_parser.add_argument_group("http arguments")
+    http_group.add_argument(
+        "--endpoint",
+        dest="endpoint_url",
+        type=str,
+        help="HTTP POST endpoint url which accepts the generated data",
+    )
     return test_parser

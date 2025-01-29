@@ -10,6 +10,7 @@ target_arg_to_type: Dict[str, TargetType] = {
     "console": TargetType.CONSOLE,
     "kafka": TargetType.KAFKA,
     "file": TargetType.FILE,
+    "http": TargetType.HTTP,
 }
 
 # Maps the name of the generator to the actual function to be called to generate the data
@@ -110,6 +111,14 @@ specific_target_args: Dict[TargetType, List[Argument]] = defaultdict(
                 dest="file_path",
                 type=str,
                 help="Path of the file where the data should be published",
+            ),
+        ],
+        TargetType.HTTP: [
+            Argument(
+                arg="--endpoint",
+                dest="endpoint_url",
+                type=str,
+                help="HTTP POST endpoint url which accepts the generated data",
             ),
         ],
     },

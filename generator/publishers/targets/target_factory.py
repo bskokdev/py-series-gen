@@ -3,6 +3,7 @@ from argparse import Namespace
 from publishers.targets.file_target import FileTarget
 
 from .console_target import ConsoleTarget
+from .http_target import HttpTarget
 from .kafka_target import KafkaTarget
 from .target import Target, TargetType
 
@@ -27,26 +28,21 @@ class TargetFactory:
         Returns:
             Target: Newly constructed target object of specific type
         """
+        common_args = {"batch_size": args.batch_size, "is_stream": args.is_stream}
         match target_type:
             case TargetType.CONSOLE:
-                return ConsoleTarget(
-                    batch_size=args.batch_size,
-                    is_stream=args.is_stream,
-                )
+                return ConsoleTarget(**common_args)
             case TargetType.KAFKA:
                 return KafkaTarget(
+                    **common_args,
                     bootstrap_server=args.bootstrap_server,
                     kafka_topic=args.kafka_topic,
-                    batch_size=args.batch_size,
-                    is_stream=args.is_stream,
                     server_port=args.port,
                 )
             case TargetType.FILE:
-                return FileTarget(
-                    file_path=args.file_path,
-                    batch_size=args.batch_size,
-                    is_stream=args.is_stream,
-                )
+                return FileTarget(**common_args, file_path=args.file_path)
+            case TargetType.HTTP:
+                return HttpTarget(**common_args, endpoint_url=args.endpoint_url)
             case _:
                 raise TypeError(
                     f"Target type '{target_type}' is not supported or no such target exists."

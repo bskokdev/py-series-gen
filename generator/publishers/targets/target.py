@@ -6,6 +6,7 @@ class TargetType(Enum):
     CONSOLE = 1
     KAFKA = 2
     FILE = 3
+    HTTP = 4
 
 
 class Target(ABC):
