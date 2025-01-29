@@ -18,7 +18,9 @@ def test_invalid_endpoint_url():
     with pytest.raises(ValueError) as exc_info:
         HttpTarget(endpoint_url="/data/random.xml", batch_size=420, is_stream=False)
 
-    assert "HTTP endpoint URL has to be a valid URL" in str(exc_info.value)
+    assert "HTTP endpoint URL has to be a valid URL (https://example.com)" in str(
+        exc_info.value
+    )
 
 
 @pytest.mark.unit_test

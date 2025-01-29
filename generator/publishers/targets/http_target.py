@@ -23,4 +23,9 @@ class HttpTarget(Target):
             )
 
         if not self._is_url_valid():
-            raise ValueError("HTTP endpoint URL has to be a valid URL")
+            raise ValueError(
+                "HTTP endpoint URL has to be a valid URL (https://example.com)"
+            )
+
+    def __repr__(self):
+        return repr(f"<<Base: {super().__repr__()}>, endpoint_url={self.endpoint_url}>")
