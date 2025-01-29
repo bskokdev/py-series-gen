@@ -2,9 +2,10 @@ from typing import Any, Callable, Generator, Type
 
 from .console_publisher import ConsolePublisher
 from .file_publisher import FilePublisher
+from .http_publisher import HttpPublisher
 from .kafka_publisher import KafkaPublisher
 from .publisher import Publisher
-from .targets import ConsoleTarget, FileTarget, KafkaTarget, Target
+from .targets import ConsoleTarget, FileTarget, HttpTarget, KafkaTarget, Target
 
 
 class PublisherFactory:
@@ -30,9 +31,11 @@ class PublisherFactory:
                 return KafkaPublisher
             case FileTarget():
                 return FilePublisher
+            case HttpTarget():
+                return HttpPublisher
             case _:
                 raise TypeError(
-                    f"Target type '{type(target).__name__}' is not supported or no such target exists."
+                    f"Target type '{type(target).__name__}' is not supported"
                 )
 
     @staticmethod
