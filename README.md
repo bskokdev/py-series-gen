@@ -2,7 +2,7 @@
 A flexible Python-based data generation tool that creates and publishes data streams using Python generators. This tool is designed to be extensible and configurable through command-line arguments, and custom generator functions.
 
 ## Features
-- 🔄 Streaming data generation using Python generator functions (only time series generator available for now)
+- 🔄 Streaming data generation using Python generator functions (only time series values for now)
 - 🎯 Multiple publish targets support (Console, Kafka, CSV, HTTP)
 - ⚡ Efficient batch processing
 - 🛠️ Configurable through CLI arguments
@@ -27,7 +27,6 @@ There's a Dockerfile provided in `/generator` directory which builds the py-seri
 
 ```bash
 # Build the docker image
-
 docker build -t py-series-gen .
 
 # Run the application using docker
@@ -37,9 +36,9 @@ docker run py-series-gen --help
 ## Usage
 
 #### Default Arguments
-* `--target <(console, kafka, file, http)>` - Specifies the publish target
+* `--target <[console, kafka, file, http]>` - Specifies the publish target
 * `--batch-size <DATA_SIZE>` - Sets the size of data batches to generate
-* `--generator` - Specifies which generator function should be used to generate the data
+* `--generator <[time-series]>` - Specifies which generator function should be used to generate the data
     * currently only `time-series` generator is supported
 * `--stream` - Enables streaming mode. For now this means, the batches are sent repeatedly to the given target.
 
