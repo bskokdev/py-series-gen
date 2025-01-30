@@ -8,15 +8,10 @@ from values import Value
 
 
 @pytest.fixture
-def http_target() -> HttpTarget:
-    return HttpTarget(endpoint_url="https://example.com/")
-
-
-@pytest.fixture
-def http_publisher(http_target: HttpTarget) -> HttpPublisher:
+def http_publisher() -> HttpPublisher:
     return HttpPublisher(
         generator_fun=lambda batch_s: [Value(data=[i]) for i in range(batch_s)],
-        target=http_target,
+        target=HttpTarget(endpoint_url="https://example.com/"),
         max_retries=4,
         backoff_factor=1,
     )
