@@ -89,15 +89,15 @@ class HttpPublisher(Publisher):
                         f"Received an error response code, trying again after: {backoff_delay} seconds"
                     )
                     res.raise_for_status()
-            except HTTPError:
+            except HTTPError as ex:
                 if attempt == self._max_retries - 1:
                     raise HTTPError(
                         f"Failed to publish data via HTTP POST to {self._target.endpoint_url} with max number of retries"
-                    )
-            except ConnectionError:
+                    ) from ex
+            except ConnectionError as ex:
                 raise ConnectionError(
                     f"Failed to connect to {self._target.endpoint_url}, check the URL"
-                )
+                ) from ex
 
         return None
 
