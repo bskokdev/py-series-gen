@@ -38,3 +38,15 @@ def file_args_fixture() -> Namespace:
         is_stream=False,
         debug=False,
     )
+
+
+@pytest.fixture
+def http_args_fixture() -> Namespace:
+    return Namespace(
+        target="http",
+        endpoint_url="http://example.com:8080/data",
+        batch_size=53,
+        generator="time-series",
+        is_stream=False,
+        debug=False,
+    )

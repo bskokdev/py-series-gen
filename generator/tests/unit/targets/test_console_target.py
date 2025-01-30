@@ -8,6 +8,15 @@ from publishers.targets import ConsoleTarget
 def test_invalid_batch_size():
     with pytest.raises(ValueError) as exc_info:
         ConsoleTarget(batch_size=-1, is_stream=False)
-    assert "Batch size must be specified (--batch-size SIZE | SIZE > 0)" in str(
-        exc_info.value
+    assert (
+        "Batch size must be specified and positive (--batch-size SIZE | SIZE > 0)"
+        in str(exc_info.value)
     )
+
+
+@pytest.mark.unit_test
+def test_valid_batch_size():
+    try:
+        ConsoleTarget(batch_size=10, is_stream=False)
+    except ValueError:
+        pytest.fail("Valid batch size should not raise a ValueError")

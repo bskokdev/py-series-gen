@@ -1,3 +1,4 @@
+import logging
 from typing import Generator
 from uuid import uuid4
 
@@ -8,6 +9,8 @@ from values import Value
 
 from .publisher import Publisher
 from .targets import KafkaTarget
+
+logger = logging.getLogger(__name__)
 
 
 class KafkaPublisher(Publisher):
@@ -55,17 +58,21 @@ class KafkaPublisher(Publisher):
             msg (str): Confirmation of successful message delivery to a topic
         """
         if err is not None:
-            print(f"Message delivery failed: {err}")
-        else:
-            print(f"Message delivered to {msg.topic()} [{msg.partition()}]")
+            logger.error(f"Message delivery failed: {err}")
+            return
 
-    def publish_batch(self):
+        logger.info(
+            f"Message delivered to {msg.topic()} at partition: [{msg.partition()}]"
+        )
+
+    def _publish_batch(self):
         """Publishes a single batch of data to a kafka topic defined in the self._target
 
         Raises:
             TypeError: Raised if target type doesn't match KafkaTarget
         """
         if not isinstance(self._target, KafkaTarget):
+            logger.error("Wrong target type provided in Kafka publisher")
             raise TypeError(
                 "Wrong target type provided to the kafka publisher, expecting"
                 " KafkaTarget"

@@ -1,7 +1,10 @@
+import logging
 import os
 from enum import Enum
 
 from .target import Target
+
+logger = logging.getLogger(__name__)
 
 
 class FileType(Enum):
@@ -20,7 +23,7 @@ class FileTarget(Target):
 
     def __init__(
         self,
-        file_path: str,
+        file_path: str = "",
         batch_size: int = 0,
         is_stream: bool = False,
     ):
@@ -37,11 +40,13 @@ class FileTarget(Target):
         """
         super()._validate_arguments()
         if not self.file_path:
+            logger.error("Invalid or empty path to a file was provided")
             raise ValueError("Valid file path has to be specified (--path FILE_PATH)")
 
         # NOTE: We don't care if the file already exists as it shall be created
         #   but we can't create such file in directory without knowing its name, and extension
         if os.path.isdir(self.file_path):
+            logger.error("Path to a directory was provided, not to a file")
             raise ValueError(
                 "Directory path is not supported, provide path to a file (~/dir/file.csv)"
             )
@@ -58,4 +63,5 @@ class FileTarget(Target):
                 self.file_type = file_type
                 return
 
+        logger.error("This extension isn't supported yet, check the file path")
         raise ValueError("Not supported extension, or invalid file path was provided")

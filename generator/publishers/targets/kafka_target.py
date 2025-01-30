@@ -1,4 +1,8 @@
+import logging
+
 from .target import Target
+
+logger = logging.getLogger(__name__)
 
 
 class KafkaTarget(Target):
@@ -11,9 +15,9 @@ class KafkaTarget(Target):
 
     def __init__(
         self,
-        kafka_topic: str,
-        bootstrap_server: str,
-        server_port: int,
+        kafka_topic: str = "",
+        bootstrap_server: str = "",
+        server_port: int = 9092,
         batch_size: int = 0,
         is_stream: bool = False,
     ):
@@ -31,14 +35,17 @@ class KafkaTarget(Target):
         """
         super()._validate_arguments()
         if not self._server_address:
+            logger.error("Bootstrap server was empty")
             raise ValueError(
                 "Bootstrap server has to be specified (--bootstrap-server ADDRESS)"
             )
         elif not self._server_port:
+            logger.error("Bootstrap server port was empty")
             raise ValueError(
                 "Bootstrap server's port has to be specified (--port PORT)"
             )
         elif not self.kafka_topic:
+            logger.error("Kafka topic was empty")
             raise ValueError("Kafka topic has to be specified (--topic TOPIC_NAME)")
 
     def __repr__(self):

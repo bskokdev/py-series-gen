@@ -1,10 +1,13 @@
 import csv
+import logging
 from typing import Generator
 
 from values import Value
 
 from .publisher import Publisher
 from .targets import FileTarget, FileType
+
+logger = logging.getLogger(__name__)
 
 
 class FilePublisher(Publisher):
@@ -27,10 +30,10 @@ class FilePublisher(Publisher):
             # TODO: Figure out how to handle headers
             # idea: each generator would specify the respective csv header
             for value in self._generator(self._target.batch_size):
-                print(f"{value.data} written to the CSV file")
+                logger.info(f"{value.data} written to the CSV file")
                 writer.writerow(value.data)
 
-    def publish_batch(self):
+    def _publish_batch(self):
         """Overrides the abstract method which specifies the publish of a single batch.
         Each file type has different write method defined in this publisher.
 
@@ -38,6 +41,10 @@ class FilePublisher(Publisher):
             TypeError: raised if the file type is not matched
         """
         if self._target.file_type not in self._type_to_write_func:
+            logger.error("FileType not supported by the publisher")
             raise TypeError("FileType not supported by the publisher")
 
-        self._type_to_write_func[self._target.file_type]()
+        try:
+            self._type_to_write_func[self._target.file_type]()
+        except OSError as ex:
+            logger.error(f"Failed to write to a file: {ex}")
