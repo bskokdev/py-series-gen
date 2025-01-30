@@ -44,4 +44,7 @@ class FilePublisher(Publisher):
             logger.error("FileType not supported by the publisher")
             raise TypeError("FileType not supported by the publisher")
 
-        self._type_to_write_func[self._target.file_type]()
+        try:
+            self._type_to_write_func[self._target.file_type]()
+        except OSError as ex:
+            logger.error(f"Failed to write to a file: {ex}")
