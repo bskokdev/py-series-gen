@@ -20,16 +20,25 @@ class HttpPublisher(Publisher):
         Publisher: Abstract publisher implementation.
     """
 
-    def __init__(self, generator_fun: Generator[Value, None, None], target: HttpTarget):
+    def __init__(
+        self,
+        generator_fun: Generator[Value, None, None],
+        target: HttpTarget,
+        max_retries: int = 5,
+        backoff_factor: int = 1,
+        status_forcelist=[429, 500, 502, 503, 504],
+    ):
         super().__init__(generator_fun, target)
-        self._max_retries = 5
-        self._backoff_factor = 1
-        self._status_forcelist = [429, 500, 502, 503, 504]
+        self._max_retries = max_retries
+        self._backoff_factor = backoff_factor
+        self._status_forcelist = status_forcelist
 
     def _compute_backoff_delay(self, response: Response, attempt: int) -> float:
         """Computes the delay the publisher should wait before attempting
         to send another request to the endpoint_url. It's possible the header
         returns Retry-After, so we prioritize this with backoff formula as fallback.
+
+        Backoff strategy = we increase the delay between requests with each attempt.
 
         Args:
             response (Response): HTTP response from the server
