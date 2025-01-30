@@ -3,7 +3,7 @@ A flexible Python-based data generation tool that creates and publishes data str
 
 ## Features
 - 🔄 Streaming data generation using Python generator functions (only time series generator available for now)
-- 🎯 Multiple publish targets support (Console, Kafka, CSV)
+- 🎯 Multiple publish targets support (Console, Kafka, CSV, HTTP)
 - ⚡ Efficient batch processing
 - 🛠️ Configurable through CLI arguments
 - 🔌 Extensible architecture for adding new publish targets
@@ -24,7 +24,7 @@ pip install -r requirements.txt
 ## Usage
 
 #### Default Arguments
-* `--target <(console, kafka, file)>` - Specifies the publish target
+* `--target <(console, kafka, file, http)>` - Specifies the publish target
 * `--batch-size <DATA_SIZE>` - Sets the size of data batches to generate
 * `--generator` - Specifies which generator function should be used to generate the data
     * currently only `time-series` generator is supported
@@ -33,7 +33,11 @@ pip install -r requirements.txt
 #### Kafka Arguments
 * `--bootstrap-server <SERVER_ADDRESS>` - Tells the program where is the Kafka bootstrap-server running
 * `--port <PORT>` - On which port the bootstrap-server runs
-* `--topic <KAFKA TOPIC>` - Specifies the topic the data should be generated to
+* `--topic <KAFKA_TOPIC>` - Specifies the topic the data should be generated to
+
+#### HTTP Arguments
+* `--endpoint <ENDPOINT_URL>` - Defines the endpoint URL where the data should be published
+    * **NOTE:** This has to be a valid URL!
 
 #### File Arguments
 * `--path FILE_PATH` - Specifies to which file the progam should write the data
@@ -57,8 +61,11 @@ Currently there are defined 2 custom marks:
 **NOTE**: some tests are disabled locally, as they would take too long to pass, and that's quite annoying.
 
 ```bash
-# To run the tests ... make sure you are in the /generator directory, or you will get warnings
+# Run this in the /generator directory 
 python3 -m pytest
+
+# Or this
+pytest
 ```
 
 
@@ -72,6 +79,9 @@ python3 py_series_gen.py --target console --generator time-series --batch-size 1
 
 # Stream batches of 32 time series values to the `py-topic` Kafka topic which is present at localhost:9092
 python3 py_series_gen.py --target kafka --generator time-series --batch-size 32 --bootstrap-server localhost --port 9092 --topic py-topic --stream
+
+# Send batch of 10 time series values to http://localhost:8080/ via HTTP POST request
+python3 py_series_gen.py --target http --endpoint http://localhost:8080/ --batch-size 10 --generator time-series
 ```
 
 ### Architecture
