@@ -21,6 +21,19 @@ cd py-series-gen/generator
 pip install -r requirements.txt
 ```
 
+## Running via Docker
+
+There's a Dockerfile provided in `/generator` directory which builds the py-series-gen image.
+
+```bash
+# Build the docker image
+
+docker build -t py-series-gen .
+
+# Run the application using docker
+docker run py-series-gen --help
+```
+
 ## Usage
 
 #### Default Arguments
