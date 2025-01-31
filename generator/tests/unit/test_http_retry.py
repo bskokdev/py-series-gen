@@ -11,7 +11,7 @@ from values import Value
 def http_publisher() -> HttpPublisher:
     return HttpPublisher(
         generator_fun=lambda batch_s: [Value(data=[i]) for i in range(batch_s)],
-        target=HttpTarget(endpoint_url="https://example.com/"),
+        target=HttpTarget(endpoint_url="https://example.com/", batch_size=1),
         max_retries=4,
         backoff_factor=1,
     )
