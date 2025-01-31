@@ -69,7 +69,7 @@ class HttpPublisher(Publisher):
             Response | None: Response object returned by the server
         """
         if not value:
-            return
+            return None
 
         for attempt in range(self._max_retries):
             try:
