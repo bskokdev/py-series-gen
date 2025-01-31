@@ -25,7 +25,7 @@ class Target(ABC):
     @abstractmethod
     def _validate_arguments(self):
         """Abstract function overriden by concrete implementations to validate their args"""
-        if self.batch_size < 0:
+        if not self.batch_size or self.batch_size < 0:
             logger.error("Batch size was a negative number, punish the user")
             raise ValueError(
                 "Batch size must be specified and positive (--batch-size SIZE | SIZE > 0)"
